@@ -1,7 +1,7 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.dashboard') }}">
+            <a class="nav-link" href="{{ route('dashboard') }}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">Dashboard</span>
             </a>
@@ -23,7 +23,19 @@
             </div>
         </li> --}}
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.users.index') }}">
+            <a class="nav-link" href="{{ route('categories.index') }}">
+               <i class="icon-head menu-icon"></i>
+                <span class="menu-title">Category</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('unit-kerjas.index') }}">
+               <i class="icon-head menu-icon"></i>
+                <span class="menu-title">Unit Kerja</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('users.index') }}">
                <i class="icon-head menu-icon"></i>
                 <span class="menu-title">Users</span>
             </a>
