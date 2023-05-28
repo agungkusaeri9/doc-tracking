@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryDetailController;
+use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\UnitKerjaController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,24 +25,30 @@ Route::redirect('/', '/login', 301);
 Auth::routes();
 
 // admin
-Route::middleware('auth')->prefix('admin')->group(function(){
-    Route::get('/',[DashboardController::class,'index'])->name('dashboard');
-    Route::resource('users',UserController::class);
-    Route::get('/profile',[ProfileController::class,'index'])->name('profile.index');
-    Route::post('/profile',[ProfileController::class,'update'])->name('profile.update');
+Route::middleware('auth')->prefix('admin')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('users', UserController::class);
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
 
 
     // categories
-    Route::get('categories/data',[CategoryController::class,'data'])->name('categories.data');
+    Route::get('categories/data', [CategoryController::class, 'data'])->name('categories.data');
     Route::resource('categories', CategoryController::class);
 
     // category-details
-    Route::get('category-details/data',[CategoryDetailController::class,'data'])->name('category-details.data');
+    Route::get('category-details/data', [CategoryDetailController::class, 'data'])->name('category-details.data');
     Route::resource('category-details', CategoryDetailController::class);
 
-     // unit-kerjas
-     Route::get('unit-kerjas/data',[UnitKerjaController::class,'data'])->name('unit-kerjas.data');
-     Route::get('unit-kerjas/get',[UnitKerjaController::class,'get'])->name('unit-kerjas.get-json');
-     Route::resource('unit-kerjas', UnitKerjaController::class);
+    // unit-kerjas
+    Route::get('unit-kerjas/data', [UnitKerjaController::class, 'data'])->name('unit-kerjas.data');
+    Route::get('unit-kerjas/get', [UnitKerjaController::class, 'get'])->name('unit-kerjas.get-json');
+    Route::resource('unit-kerjas', UnitKerjaController::class);
+
+
+    // jabatans
+    Route::get('jabatans/data', [JabatanController::class, 'data'])->name('jabatans.data');
+    Route::get('jabatans/get', [JabatanController::class, 'get'])->name('jabatans.get-json');
+    Route::resource('jabatans', JabatanController::class);
 });

@@ -40,7 +40,7 @@
                             <div class="my-2 d-flex justify-content-between align-items-center">
                                 <div class="form-check">
                                     <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input">
+                                        <input type="checkbox"  name="rememberme"  class="form-check-input">
                                         Keep me signed in
                                     </label>
                                 </div>
