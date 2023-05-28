@@ -10,7 +10,7 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        return view('admin.pages.profile',[
+        return view('pages.profile',[
             'title' => 'Profile'
         ]);
     }
@@ -40,7 +40,7 @@ class ProfileController extends Controller
             $user->update($data);
 
             DB::commit();
-            return redirect()->route('admin.profile.index')->with('success','Profile berhasil diupdate.');
+            return redirect()->route('profile.index')->with('success','Profile berhasil diupdate.');
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;

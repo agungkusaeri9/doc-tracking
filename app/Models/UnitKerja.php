@@ -14,4 +14,9 @@ class UnitKerja extends Model
     {
         return $this->belongsTo(UnitKerja::class,'parent_id','id');
     }
+
+    public function role_unit()
+    {
+        return $this->hasOne(RoleUnitKerja::class);
+    }
 }

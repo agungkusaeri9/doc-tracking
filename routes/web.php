@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryDetailController;
 use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\LetterController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UnitKerjaController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +29,7 @@ Auth::routes();
 // admin
 Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('users', UserController::class);
+
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
@@ -44,11 +46,28 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     // unit-kerjas
     Route::get('unit-kerjas/data', [UnitKerjaController::class, 'data'])->name('unit-kerjas.data');
     Route::get('unit-kerjas/get', [UnitKerjaController::class, 'get'])->name('unit-kerjas.get-json');
+    Route::post('unit-kerjas/set-role', [UnitKerjaController::class, 'set_role'])->name('unit-kerjas.set-role');
     Route::resource('unit-kerjas', UnitKerjaController::class);
 
 
     // jabatans
     Route::get('jabatans/data', [JabatanController::class, 'data'])->name('jabatans.data');
-    Route::get('jabatans/get', [JabatanController::class, 'get'])->name('jabatans.get-json');
+    Route::get('jabatans/getbyunitkerja', [JabatanController::class, 'get_by_unitkerja'])->name('jabatans.get-byunitkerja');
     Route::resource('jabatans', JabatanController::class);
+
+    // roles
+    Route::get('roles/data', [RoleController::class, 'data'])->name('roles.data');
+    Route::get('roles/get', [RoleController::class, 'get'])->name('roles.get-json');
+    Route::get('roles/getbyunitkerja', [RoleController::class, 'get_by_unitkerja'])->name('roles.get-byunitkerja');
+    Route::resource('roles', RoleController::class);
+
+
+    // users
+    Route::get('users/data', [UserController::class, 'data'])->name('users.data');
+    Route::resource('users', UserController::class);
+
+    // create letter
+    // surat umum
+    Route::get('/letter/create',[LetterController::class,'create'])->name('letters.create');
+    Route::post('/letter/create',[LetterController::class,'store'])->name('letters.store');
 });

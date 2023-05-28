@@ -19,15 +19,20 @@ class UnitKerjaController extends Controller
     public function data()
     {
         if (request()->ajax()) {
-            $data = UnitKerja::query();
+            $data = UnitKerja::with(['role_unit.role']);
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
-                    $action = "<button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</button><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
+                    $role_unit_id = $model->role_unit->id ?? NULL;
+                    $role_id = $model->role_unit->role_id ?? NULL;
+                    $action = "<button class='btn btn-sm py-2 btn-warning btnSetRole mx-1' data-id='$model->id' data-roleunitid='$role_unit_id' data-roleid='$role_id'><i class='fas fa fa-edit'></i> Set Role</button><button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</button><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
                     return $action;
                 })
                 ->addColumn('child', function($model){
                     return $model->child->name ?? '-';
+                })
+                ->addColumn('role_category', function($model){
+                    return $model->role_unit->role->name ?? '-';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -92,5 +97,27 @@ class UnitKerjaController extends Controller
             DB::rollBack();
             return response()->json(['status' => 'error', 'message' => 'System Error!']);
         }
+    }
+
+    public function set_role()
+    {
+        request()->validate([
+            'id' => ['required']
+        ]);
+
+        $id = request('id');
+        $role_id = request('role_id');
+        $role_unit_kerja_id = request('role_unit_kerja_id');
+
+        // return response()->json(request()->all());
+
+        $unit_kerja = UnitKerja::find($id);
+        $unit_kerja->role_unit()->updateOrCreate([
+            'id' => $role_unit_kerja_id
+        ],
+        [
+            'role_id' => $role_id
+        ]);
+        return response()->json(['status' => 'success', 'message' => 'Role set  to unit kerja successfully.']);
     }
 }

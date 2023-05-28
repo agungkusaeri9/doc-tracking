@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('layouts.app')
 @section('content')
     <div class="row">
         <div class="col-md-12">
@@ -13,6 +13,7 @@
                                     <th>No.</th>
                                     <th>Name</th>
                                     <th>Kelompok</th>
+                                    <th>Kategori Role</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -60,6 +61,37 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalSetRole" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="javascript:void(0)" method="post" id="formSetRole">
+                    <div class="modal-body">
+                        @csrf
+                        <input type="number" name="id" id="id" hidden>
+                        <input type="number" name="role_unit_kerja_id" id="role_unit_kerja_id" hidden>
+                        <div class="form-group">
+                            <label for="role_id">Pilih Role</span></label>
+                            <select name="role_id" id="role_id" class="form-control">
+
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 <x-Admin.Sweetalert />
 <x-Admin.Datatable>
@@ -84,6 +116,10 @@
                         {
                             data: 'child',
                             name: 'child'
+                        },
+                        {
+                            data: 'role_category',
+                            name: 'role_category'
                         },
                         {
                             data: 'action',
@@ -194,11 +230,79 @@
                     })
                 })
 
+                // btn setRole
+                $('body').on('click', '.btnSetRole',  function() {
+                    let id = $(this).data('id');
+                    let role_unit_kerja_id = $(this).data('roleunitid')
+                    let role_id = $(this).data('roleid');
+                    let data_roles = getRoles();
+
+                    // looping unit kerja
+                    $('#modalSetRole #role_id').empty();
+                    $('#modalSetRole #role_id').append(
+                        `<option value="">Tidak Ada</option>`
+                    );
+                    data_roles.forEach(role => {
+                        isSelected = role.id == role_id ? 'selected' : '';
+                        $('#modalSetRole #role_id').append(
+                            `<option ${isSelected} value="${role.id}">${role.name}</option>`);
+                    });
+                    $('#formSetRole #id').val(id);
+                    $('#formSetRole #role_unit_kerja_id').val(role_unit_kerja_id);
+
+                    $('#modalSetRole .modal-title').text('Set Role');
+                    $('#modalSetRole').modal('show');
+                })
+
+                 // btn submit set role
+                 $('#modalSetRole #formSetRole').on('submit', function(e) {
+                    e.preventDefault();
+                    let form = $('#modalSetRole #formSetRole');
+                    $.ajax({
+                        url: '{{ route('unit-kerjas.set-role') }}',
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: form.serialize(),
+                        success: function(response) {
+                            swal(response);
+                            otable.ajax.reload();
+                            $('#modalSetRole').modal('hide');
+                        },
+                        error: function(response) {
+                            let errors = response.responseJSON?.errors
+                            $(form).find('.text-danger.text-small').remove()
+                            if (errors) {
+                                for (const [key, value] of Object.entries(errors)) {
+                                    $(`[name='${key}']`).parent().append(
+                                        `<sp class="text-danger text-small">${value}</sp>`)
+                                    $(`[name='${key}']`).addClass('is-invalid')
+                                }
+                            }
+                        }
+                    })
+                })
+
                 // get unit_kerjas
                 let getUnitKerjas = function(id) {
                     let data;
                     $.ajax({
                         url: '{{ route('unit-kerjas.get-json') }}',
+                        type: 'JSON',
+                        method: 'GET',
+                        async: false,
+                        success: function(response) {
+                            data = response;
+                        }
+                    })
+
+                    return data;
+                }
+
+                 // get get roles
+                 let getRoles = function(id) {
+                    let data;
+                    $.ajax({
+                        url: '{{ route('roles.get-json') }}',
                         type: 'JSON',
                         method: 'GET',
                         async: false,
