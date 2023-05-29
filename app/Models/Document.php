@@ -15,6 +15,11 @@ class Document extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function unit_kerja()
+    {
+        return $this->belongsTo(UnitKerja::class,'to_unit_kerja_id','id');
+    }
+
     public function attachments()
     {
         return $this->hasMany(DocumentAttachment::class);
@@ -32,6 +37,6 @@ class Document extends Model
 
     public function scopeInboxbyuser($query)
     {
-        return $query->where('to_unit_kerja_id',auth()->unit_kerja->id ?? 0);
+        return $query->where('to_unit_kerja_id',auth()->user()->unit_kerja->id ?? 0);
     }
 }

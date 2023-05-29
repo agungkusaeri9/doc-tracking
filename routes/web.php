@@ -5,9 +5,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryDetailController;
+use App\Http\Controllers\DocumentAttachmentController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\InboxController;
 use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\LetterAttachmentController;
 use App\Http\Controllers\LetterController;
 use App\Http\Controllers\OutboxController;
 use App\Http\Controllers\RoleController;
@@ -73,10 +75,20 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     // surat umum
     Route::get('/letter/create', [LetterController::class, 'create'])->name('letters.create');
     Route::post('/letter/create', [LetterController::class, 'store'])->name('letters.store');
+    Route::get('outbox/letter/{id}/edit', [LetterController::class, 'edit'])->name('letters.edit');
+    Route::patch('outbox/letter/{id}/edit', [LetterController::class, 'update'])->name('letters.update');
+    Route::delete('outbox/letter/{id}', [LetterController::class, 'destroy'])->name('letters.destroy');
+    Route::get('outbox/letter/{id}', [LetterController::class, 'show'])->name('letters.show');
+    Route::get('inbox/letter/{id}', [LetterController::class, 'show_inbox'])->name('letters.inbox.show');
 
     // surat khusus
     Route::get('/documents/create', [DocumentController::class, 'create'])->name('documents.create');
     Route::post('/documents/create', [DocumentController::class, 'store'])->name('documents.store');
+    Route::get('outbox/documents/{id}/edit', [DocumentController::class, 'edit'])->name('documents.edit');
+    Route::patch('outbox/documents/{id}/edit', [DocumentController::class, 'update'])->name('documents.update');
+    Route::delete('outbox/documents/{id}', [DocumentController::class, 'destroy'])->name('documents.destroy');
+    Route::get('outbox/documents/{id}', [DocumentController::class, 'show'])->name('documents.show');
+    Route::get('inbox/documents/{id}', [DocumentController::class, 'show_inbox'])->name('documents.inbox.show');
 
     // surat masuk
     Route::get('inbox/data', [InboxController::class, 'data'])->name('inbox.data');
@@ -85,4 +97,11 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     // surat masuk
     Route::get('outbox/data', [OutboxController::class, 'data'])->name('outbox.data');
     Route::get('/outbox', [OutboxController::class, 'index'])->name('outbox.index');
+
+
+    // attachmentd download
+    Route::get('letter-attachment/{id}/download',[LetterAttachmentController::class,'download'])->name('letter-attachments.download');
+
+    // attachmentd download
+    Route::get('document-attachment/{id}/download',[DocumentAttachmentController::class,'download'])->name('document-attachments.download');
 });

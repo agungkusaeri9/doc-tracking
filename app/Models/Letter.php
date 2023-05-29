@@ -23,4 +23,9 @@ class Letter extends Model
     {
         return $query->where('to_user_id', auth()->id());
     }
+
+    public function to()
+    {
+        return $this->belongsTo(User::class,'to_user_id','id');
+    }
 }
