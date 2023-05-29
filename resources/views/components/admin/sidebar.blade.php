@@ -9,7 +9,7 @@
                 <ul class="bg-white flex-column sub-menu unstyled-list" style="list-style: none">
                     <li class="nav-item"> <a class="nav-link my-0 py-1 text-dark" href="{{ route('letters.create') }}"> Umum </a>
                     </li>
-                    <li class="nav-item"> <a class="nav-link my-1 py-0 text-dark" href="">
+                    <li class="nav-item"> <a class="nav-link my-1 py-0 text-dark" href="{{ route('documents.create') }}">
                             Khusus </a></li>
                 </ul>
             </div>

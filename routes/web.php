@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryDetailController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\LetterController;
 use App\Http\Controllers\RoleController;
@@ -70,4 +71,8 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     // surat umum
     Route::get('/letter/create',[LetterController::class,'create'])->name('letters.create');
     Route::post('/letter/create',[LetterController::class,'store'])->name('letters.store');
+
+      // surat khusus
+      Route::get('/documents/create',[DocumentController::class,'create'])->name('documents.create');
+      Route::post('/documents/create',[DocumentController::class,'store'])->name('documents.store');
 });
