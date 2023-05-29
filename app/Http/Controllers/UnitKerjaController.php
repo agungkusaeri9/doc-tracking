@@ -80,7 +80,7 @@ class UnitKerjaController extends Controller
             DB::commit();
             return response()->json(['status' => 'success', 'message' => $message]);
         } catch (\Throwable $th) {
-            Throw $th;
+            // Throw $th;
             DB::rollBack();
             return response()->json(['status' => 'error', 'message' => 'System Error!']);
         }
