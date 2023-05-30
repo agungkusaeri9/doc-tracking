@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Letter;
 use App\Models\LetterAttachments;
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -50,6 +51,16 @@ class LetterController extends Controller
                     'file' => $lamp->store('letter', 'public')
                 ]);
             }
+
+            // send notifikasi
+            Notification::create([
+                'judul' => auth()->user()->name . ' mengirimkan jenis surat umum kepada anda.',
+                'jenis' => 'umum',
+                'from' => auth()->id(),
+                'to' => $letter->to_user_id,
+                'surat_id' => $letter->id
+            ]);
+
             DB::commit();
             return redirect()->route('dashboard')->with('success', 'Letter Created successfully.');
         } catch (\Throwable $th) {
@@ -126,6 +137,16 @@ class LetterController extends Controller
             //         'file' => $lamp->store('letter', 'public')
             //     ]);
             // }
+
+             // send notifikasi
+             Notification::create([
+                'judul' => auth()->user()->name . ' merubah surat umum yang dikirim kepada anda.',
+                'jenis' => 'umum',
+                'from' => auth()->id(),
+                'to' => $item->to_user_id,
+                'surat_id' => $item->id
+            ]);
+
             DB::commit();
             return redirect()->route('outbox.index',[
                 'jenis=letter'

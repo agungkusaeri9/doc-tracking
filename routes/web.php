@@ -5,14 +5,17 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryDetailController;
+use App\Http\Controllers\CekSuratController;
 use App\Http\Controllers\DocumentAttachmentController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\InboxController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\LetterAttachmentController;
 use App\Http\Controllers\LetterController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OutboxController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TteController;
 use App\Http\Controllers\UnitKerjaController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,8 +31,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::redirect('/', '/login', 301);
+Route::get('/cek-surat-umum',[CekSuratController::class,'umum']);
+Route::get('/cek-surat-khusus',[CekSuratController::class,'khusus']);
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 // admin
 Route::middleware('auth')->prefix('admin')->group(function () {
@@ -94,7 +99,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('inbox/data', [InboxController::class, 'data'])->name('inbox.data');
     Route::get('/inbox', [InboxController::class, 'index'])->name('inbox.index');
 
-    // surat masuk
+    // surat keluar
     Route::get('outbox/data', [OutboxController::class, 'data'])->name('outbox.data');
     Route::get('/outbox', [OutboxController::class, 'index'])->name('outbox.index');
 
@@ -104,4 +109,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     // attachmentd download
     Route::get('document-attachment/{id}/download',[DocumentAttachmentController::class,'download'])->name('document-attachments.download');
+
+        // notifikasi
+        Route::get('/notifications/data', [NotificationController::class, 'data'])->name('notifications.data');
+        Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+        Route::get('/notifications/{id}/read', [NotificationController::class, 'read'])->name('notifications.read');
 });

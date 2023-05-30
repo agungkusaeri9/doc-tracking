@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Document;
 use App\Models\DocumentAttachment;
 use App\Models\DocumentDetails;
+use App\Models\Notification;
 use App\Models\UnitKerja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -83,6 +84,16 @@ class DocumentController extends Controller
                     ]);
                 }
             }
+
+            // send notifikasi
+            Notification::create([
+                'judul' => auth()->user()->name . ' mengirimkan jenis surat khusus kepada  unit anda.',
+                'jenis' => 'khusus',
+                'from' => auth()->id(),
+                'to' => $document->to_unit_kerja_id,
+                'surat_id' => $document->id
+            ]);
+
             DB::commit();
             return redirect()->route('dashboard')->with('success', 'Document Created successfully.');
         } catch (\Throwable $th) {
@@ -167,7 +178,7 @@ class DocumentController extends Controller
 
                 // dd($item);
                 // hapus detail semua
-                DocumentDetails::where('document_id',$item->id)->delete();
+                DocumentDetails::where('document_id', $item->id)->delete();
 
                 // create baru
                 foreach ($detail_item as $key => $detail) {
@@ -183,8 +194,18 @@ class DocumentController extends Controller
                     ]);
                 }
             }
+
+            // send notifikasi
+            Notification::create([
+                'judul' => auth()->user()->name . ' merubah surat khusus yang dikirim kepada unit anda.',
+                'jenis' => 'khusus',
+                'from' => auth()->id(),
+                'to' => $item->to_unit_kerja_id,
+                'surat_id' => $item->id
+            ]);
+
             DB::commit();
-            return redirect()->route('outbox.index',[
+            return redirect()->route('outbox.index', [
                 'jenis=document'
             ])->with('success', 'Document Updated successfully.');
         } catch (\Throwable $th) {
@@ -199,8 +220,7 @@ class DocumentController extends Controller
         DB::beginTransaction();
         try {
             $document = Document::findOrFail($id);
-            foreach($document->attachments as $lampiran)
-            {
+            foreach ($document->attachments as $lampiran) {
                 Storage::disk('public')->delete($lampiran->file);
                 DocumentAttachment::destroy($lampiran->id);
             }

@@ -34,7 +34,7 @@
                         <li class="list-item mb-2">
                             <b>Tanggal Submit</b>
                             <br>
-                            <span>{{ $item->created_at }}</span>
+                            <span>{{ $item->created_at->translatedFormat('H:i:s d-m-Y') }}</span>
                         </li>
 
                         @foreach ($item->attachments as $key => $lampiran)

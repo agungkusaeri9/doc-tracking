@@ -17,12 +17,11 @@
   <link rel="stylesheet" href="{{ asset('assets/css/vertical-layout-light/style.css') }}">
   <!-- endinject -->
   <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+  @stack('styles')
 </head>
 
 <body>
-  <div class="container-scroller">
-   @yield('content')
-  </div>
+    @yield('content')
   <!-- container-scroller -->
   <!-- plugins:js -->
   <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>

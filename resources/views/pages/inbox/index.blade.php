@@ -8,12 +8,23 @@
                     <form action="" method="get">
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="jenis">Pilih Jenis</label>
                                     <select name="jenis" id="jenis" class="form-control">
                                         <option @selected(request('jenis') === 'letter') value="letter">Umum</option>
                                         <option @selected(request('jenis') === 'document') value="document">Khusus</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="tahun">Pilih Tahun</label>
+                                    <select name="tahun" id="tahun" class="form-control">
+                                      <option value="">Semua</option>
+                                      @for ($i = $tahun_sekarang - 5; $i < $tahun_sekarang + 10; $i++)
+                                      <option @selected($i == request('tahun')) value="{{ $i }}">{{ $i }}</option>
+                                      @endfor
                                     </select>
                                 </div>
                             </div>
@@ -71,12 +82,13 @@
         <script>
             $(function() {
                 let jenis = '{{ request('jenis') }}';
+                let tahun = '{{ request('tahun') }}';
                 if (jenis === 'document') {
                     let otable = $('#dTable').DataTable({
                         processing: true,
                         serverSide: true,
                         responsive: true,
-                        ajax: '{{ route('inbox.data') }}' + '?jenis=' + jenis,
+                        ajax: '{{ route('inbox.data') }}' + '?jenis=' + jenis + '&tahun=' + tahun,
                         columns: [{
                                 data: 'DT_RowIndex',
                                 name: 'DT_RowIndex',
@@ -112,7 +124,7 @@
                         processing: true,
                         serverSide: true,
                         responsive: true,
-                        ajax: '{{ route('inbox.data') }}' + '?jenis=' + jenis,
+                        ajax: '{{ route('inbox.data') }}' + '?jenis=' + jenis + '&tahun=' + tahun,
                         columns: [{
                                 data: 'DT_RowIndex',
                                 name: 'DT_RowIndex',
