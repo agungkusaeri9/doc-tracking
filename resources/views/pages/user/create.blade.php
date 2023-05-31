@@ -53,6 +53,17 @@
                                 @enderror
                             </div>
                             <div class='form-group mb-3'>
+                                <label for='tte_pin' class='mb-2'>PIN TTE</label>
+                                <input type='password' name='tte_pin'
+                                    class='form-control @error('tte_pin') is-invalid @enderror'
+                                    value='{{ old('tte_pin') }}'>
+                                @error('tte_pin')
+                                    <div class='invalid-feedback'>
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class='form-group mb-3'>
                                 <label for='nip' class='mb-2'>NIP</label>
                                 <input type='text' name='nip' class='form-control @error('nip') is-invalid @enderror'
                                     value='{{ old('nip') }}'>

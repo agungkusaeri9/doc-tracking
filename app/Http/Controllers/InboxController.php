@@ -35,9 +35,12 @@ class InboxController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function ($model) {
                         $link_detail = route('documents.inbox.show', [
-                            'id' => Crypt::encryptString($model->id)
+                           'uuid' => $model->uuid
                         ]);
-                        $action = "<a href='$link_detail' class='btn btn-sm py-2 btn-warning mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> View</a>";
+                        $link_create_tte = route('documents.tte.index', [
+                            'uuid' => $model->uuid ?? 0
+                        ]);
+                        $action = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white btn-secondary mx-1' ><i class='fas fa fa-eye'></i> TTE</a><a href='$link_detail' class='btn btn-sm py-2 btn-warning mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> View</a>";
                         return $action;
                     })
                     ->addColumn('unit_kerja', function ($model) {
@@ -57,9 +60,12 @@ class InboxController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function ($model) {
                         $link_detail = route('letters.inbox.show', [
-                            'id' => Crypt::encryptString($model->id)
+                           'uuid' => $model->uuid
                         ]);
-                        $action = "<a href='$link_detail' class='btn btn-sm py-2 btn-warning mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> View</a>";
+                        $link_create_tte = route('letters.tte.index', [
+                            'uuid' => $model->uuid ?? 0
+                        ]);
+                        $action = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white btn-secondary mx-1' ><i class='fas fa fa-eye'></i> TTE</a><a href='$link_detail' class='btn btn-sm py-2 btn-warning mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> View</a>";
                         return $action;
                     })
                     ->rawColumns(['action'])

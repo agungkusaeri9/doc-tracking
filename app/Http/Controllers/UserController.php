@@ -78,7 +78,8 @@ class UserController extends Controller
             'name' => ['required'],
             'username' => ['required', 'unique:users,username', 'alpha_dash'],
             'email' => ['required', 'unique:users,email', 'email'],
-            'password' => ['required', 'min:8']
+            'password' => ['required', 'min:8'],
+            'tte_pin' => ['required','min:5']
         ]);
 
 
@@ -98,7 +99,8 @@ class UserController extends Controller
                 'alamat' => request('alamat'),
                 'unit_kerja_id' => request('unit_kerja_id'),
                 'jabatan_id' => request('jabatan_id'),
-                'foto' => request()->file('foto') ? request()->file('foto')->store('user', 'public') : NULL
+                'foto' => request()->file('foto') ? request()->file('foto')->store('user', 'public') : NULL,
+                'tte_pin' => bcrypt(request('tte_pin'))
             ]);
 
             request('role') ? $user->assignRole(request('role')) : NULL;
@@ -145,6 +147,18 @@ class UserController extends Controller
             $password = $user->password;
         }
 
+         // jika ada tte_pin
+         if(request('tte_pin'))
+         {
+             request()->validate([
+                 'tte_pin' => ['required','min:5']
+             ]);
+
+             $tte_pin = bcrypt(request('tte_pin'));
+         }else{
+             $tte_pin = $user->tte_pin;
+         }
+
 
         DB::beginTransaction();
 
@@ -165,6 +179,7 @@ class UserController extends Controller
                 'username' => request('username'),
                 'email' => request('email'),
                 'password' => $password,
+                'tte_pin' => $tte_pin,
                 'nip' => request('nip'),
                 'jenis_kelamin' => request('jenis_kelamin'),
                 'status' => request('status') ? 1 : 0,

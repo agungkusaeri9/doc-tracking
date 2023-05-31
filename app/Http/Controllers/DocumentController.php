@@ -8,10 +8,16 @@ use App\Models\DocumentAttachment;
 use App\Models\DocumentDetails;
 use App\Models\Notification;
 use App\Models\UnitKerja;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Ramsey\Uuid\Uuid;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class DocumentController extends Controller
 {
@@ -51,6 +57,7 @@ class DocumentController extends Controller
             $data = request()->only(['kode_hal', 'to_unit_kerja_id', 'to_tembusan_unit_kerja_id', 'hal', 'deskripsi', 'keterangan', 'body', 'category_id']);
 
             $data['from_user_id'] = auth()->id();
+            $data['uuid'] = Uuid::uuid4();
             $document = Document::create($data);
             $lampiran = request()->file('lampiran');
             $detail_item = request('detail_item');
@@ -103,30 +110,27 @@ class DocumentController extends Controller
         }
     }
 
-    public function show($id_encrypt)
+    public function show($uuid)
     {
-        $id = Crypt::decryptString($id_encrypt);
-        $item = Document::findOrFail($id);
+        $item = Document::where('uuid',$uuid)->first();
         return view('pages.document.show', [
             'title' => 'Detail Surat',
             'item' => $item
         ]);
     }
 
-    public function show_inbox($id_encrypt)
+    public function show_inbox($uuid)
     {
-        $id = Crypt::decryptString($id_encrypt);
-        $item = Document::findOrFail($id);
+        $item = Document::where('uuid',$uuid)->first();
         return view('pages.document.show-inbox', [
             'title' => 'Detail Surat',
             'item' => $item
         ]);
     }
 
-    public function edit($id_encrypt)
+    public function edit($uuid)
     {
-        $id = Crypt::decryptString($id_encrypt);
-        $item = Document::findOrFail($id);
+        $item = Document::where('uuid',$uuid)->first();
         $unit_kerjas = UnitKerja::orderBy('name', 'ASC')->get();
         $categories = Category::orderBy('name', 'ASC')->get();
         return view('pages.document.edit', [
@@ -137,7 +141,7 @@ class DocumentController extends Controller
         ]);
     }
 
-    public function update($id_encrypt)
+    public function update($uuid)
     {
         request()->validate([
             'kode_hal' => ['required'],
@@ -157,8 +161,7 @@ class DocumentController extends Controller
 
         ]);
 
-        $id = decrypt($id_encrypt);
-        $item = Document::with('details')->findOrFail($id);
+        $item = Document::with('details')->where('uuid',$uuid)->first();
         DB::beginTransaction();
         try {
             $data = request()->only(['kode_hal', 'to_unit_kerja_id', 'to_tembusan_unit_kerja_id', 'hal', 'deskripsi', 'keterangan', 'body', 'category_id']);
@@ -232,5 +235,62 @@ class DocumentController extends Controller
             DB::rollBack();
             return response()->json(['status' => 'error', 'message' => 'System Error!']);
         }
+    }
+
+    public function tte($uuid)
+    {
+        $item = Document::where('uuid',$uuid)->firstOrFail();
+        $users = User::whereNotIn('id', [auth()->id()])->get();
+        return view('pages.document.tte', [
+            'title' => 'TTE surat',
+            'users' => $users,
+            'item' => $item
+        ]);
+    }
+
+    public function tte_create($uuid)
+    {
+        request()->validate([
+            'tte_pin' => ['required']
+        ]);
+
+        $item = Document::where('uuid',$uuid)->firstOrFail();
+
+        // cek pin TTE
+        if(!Hash::check(request()->tte_pin,auth()->user()->tte_pin))
+        {
+            return redirect()->back()->with('error','PIN TTE Invalid.');
+        }
+
+        $url_qrcode = route('cek-letter',[
+            'uuid' => $uuid
+        ]);
+        $image = QrCode::format('png')
+            // ->merge('img/t.jpg', 0.1, true)
+            ->size(200)->errorCorrection('H')
+            ->generate($url_qrcode);
+        $output_file = 'qr-code/document/' . $uuid . '.png';
+        Storage::disk('public')->put($output_file, $image);
+
+        $item->update([
+            'tte_created_user_id' => auth()->id(),
+            'tte_created' => Carbon::now(),
+            'qrcode' => $output_file
+        ]);
+
+        return redirect()->route('documents.tte.index',[
+            'uuid' => $uuid
+        ])->with('success','TTE created successfully');
+    }
+
+    public function tte_download($uuid)
+    {
+        $item = Document::where('uuid', $uuid)->firstOrFail();
+        // $qrcode = QrCode::size(400)->generate($item->uuid);\
+        $pdf = Pdf::loadView('pages.tte.document.download', [
+            'item' => $item
+        ]);
+
+        return $pdf->download($item->uuid . '.pdf');
     }
 }

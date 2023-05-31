@@ -9,6 +9,10 @@ class Letter extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    protected $casts = [
+        'tte_created' => 'datetime',
+        'tanggal' => 'datetime'
+    ];
 
     public function attachments()
     {
@@ -26,6 +30,15 @@ class Letter extends Model
 
     public function to()
     {
-        return $this->belongsTo(User::class,'to_user_id','id');
+        return $this->belongsTo(User::class, 'to_user_id', 'id');
+    }
+    public function tte_created_user()
+    {
+        return $this->belongsTo(User::class, 'tte_created_user_id', 'id');
+    }
+
+    public function qrcode()
+    {
+        return asset('storage/' . $this->qrcode);
     }
 }

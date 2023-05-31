@@ -6,10 +6,17 @@ use App\Models\Letter;
 use App\Models\LetterAttachments;
 use App\Models\Notification;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
+use Ramsey\Uuid\Uuid;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class LetterController extends Controller
 {
@@ -43,15 +50,18 @@ class LetterController extends Controller
         try {
             $data = request()->except(['lampiran']);
             $data['from_user_id'] = auth()->id();
+            $data['uuid'] = Uuid::uuid4();
             $letter = Letter::create($data);
             $lampiran = request()->file('lampiran');
+            // cek apakah ada lampiran
             // insert lampiran
-            foreach ($lampiran as $lamp) {
-                $letter->attachments()->create([
-                    'file' => $lamp->store('letter', 'public')
-                ]);
+            if ($lampiran) {
+                foreach ($lampiran as $lamp) {
+                    $letter->attachments()->create([
+                        'file' => $lamp->store('letter', 'public')
+                    ]);
+                }
             }
-
             // send notifikasi
             Notification::create([
                 'judul' => auth()->user()->name . ' mengirimkan jenis surat umum kepada anda.',
@@ -70,20 +80,18 @@ class LetterController extends Controller
         }
     }
 
-    public function show($id_encrypt)
+    public function show($uuid)
     {
-        $id = Crypt::decryptString($id_encrypt);
-        $item = Letter::findOrFail($id);
+        $item = Letter::with(['tte_created_user'])->where('uuid', $uuid)->first();
         return view('pages.letter.show', [
             'title' => 'Detail Surat',
             'item' => $item
         ]);
     }
 
-    public function show_inbox($id_encrypt)
+    public function show_inbox($uuid)
     {
-        $id = Crypt::decryptString($id_encrypt);
-        $item = Letter::findOrFail($id);
+        $item = Letter::where('uuid', $uuid)->first();
         return view('pages.letter.show-inbox', [
             'title' => 'Detail Surat',
             'item' => $item
@@ -91,10 +99,9 @@ class LetterController extends Controller
     }
 
 
-    public function edit($id_encrypt)
+    public function edit($uuid)
     {
-        $id = Crypt::decryptString($id_encrypt);
-        $item = Letter::findOrFail($id);
+        $item = Letter::where('uuid', $uuid)->first();
         $users = User::whereNotIn('id', [auth()->id()])->get();
         return view('pages.letter.edit', [
             'title' => 'Edit Surat',
@@ -103,10 +110,8 @@ class LetterController extends Controller
         ]);
     }
 
-    public function update($id_encrypt)
+    public function update($uuid)
     {
-        $id = decrypt($id_encrypt);
-
         request()->validate([
             'tanggal' => ['required'],
             'to_user_id' => ['required'],
@@ -125,7 +130,7 @@ class LetterController extends Controller
         DB::beginTransaction();
         try {
 
-            $item = Letter::findOrFail($id);
+            $item = Letter::where('uuid', $uuid)->first();
 
             $data = request()->except(['lampiran']);
             $data['from_user_id'] = auth()->id();
@@ -138,8 +143,8 @@ class LetterController extends Controller
             //     ]);
             // }
 
-             // send notifikasi
-             Notification::create([
+            // send notifikasi
+            Notification::create([
                 'judul' => auth()->user()->name . ' merubah surat umum yang dikirim kepada anda.',
                 'jenis' => 'umum',
                 'from' => auth()->id(),
@@ -148,7 +153,7 @@ class LetterController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('outbox.index',[
+            return redirect()->route('outbox.index', [
                 'jenis=letter'
             ])->with('success', 'Letter Updated successfully.');
         } catch (\Throwable $th) {
@@ -163,8 +168,7 @@ class LetterController extends Controller
         DB::beginTransaction();
         try {
             $letter = Letter::findOrFail($id);
-            foreach($letter->attachments as $lampiran)
-            {
+            foreach ($letter->attachments as $lampiran) {
                 Storage::disk('public')->delete($lampiran->file);
                 LetterAttachments::destroy($lampiran->id);
             }
@@ -178,4 +182,60 @@ class LetterController extends Controller
         }
     }
 
+    public function tte($uuid)
+    {
+        $item = Letter::where('uuid', $uuid)->firstOrFail();
+        $users = User::whereNotIn('id', [auth()->id()])->get();
+        return view('pages.letter.tte', [
+            'title' => 'TTE surat',
+            'users' => $users,
+            'item' => $item
+        ]);
+    }
+
+    public function tte_create($uuid)
+    {
+        request()->validate([
+            'tte_pin' => ['required']
+        ]);
+
+        $item = Letter::where('uuid', $uuid)->firstOrFail();
+
+        // cek pin TTE
+        if (!Hash::check(request()->tte_pin, auth()->user()->tte_pin)) {
+            return redirect()->back()->with('error', 'PIN TTE Invalid.');
+        }
+
+        $url_qrcode = route('cek-letter', [
+            'uuid' => $uuid
+        ]);
+        $image = QrCode::format('png')
+            // ->merge('img/t.jpg', 0.1, true)
+            ->size(200)->errorCorrection('H')
+            ->generate($url_qrcode);
+        $output_file = 'qr-code/letter/' . $uuid . '.png';
+        Storage::disk('public')->put($output_file, $image);
+
+        $item->update([
+            'tte_created_user_id' => auth()->id(),
+            'tte_created' => Carbon::now(),
+            'qrcode' => $output_file
+        ]);
+
+
+        return redirect()->route('letters.tte.index', [
+            'uuid' => $uuid
+        ])->with('success', 'TTE created successfully');
+    }
+
+    public function tte_download($uuid)
+    {
+        $item = Letter::where('uuid', $uuid)->firstOrFail();
+        // $qrcode = QrCode::size(400)->generate($item->uuid);\
+        $pdf = FacadePdf::loadView('pages.tte.letter.download', [
+            'item' => $item
+        ]);
+
+        return $pdf->download($item->uuid . '.pdf');
+    }
 }

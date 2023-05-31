@@ -50,7 +50,8 @@
                             </div>
                             <div class='form-group mb-3'>
                                 <label class='mb-2' for='to_tembusan_unit_kerja_id'>Tembusan</label>
-                                <select name="to_tembusan_unit_kerja_id" id="to_tembusan_unit_kerja_id" class="form-control">
+                                <select name="to_tembusan_unit_kerja_id" id="to_tembusan_unit_kerja_id"
+                                    class="form-control">
                                     <option value="" selected disabled>Pilih Tembusan</option>
                                     @foreach ($unit_kerjas as $unit_kerja)
                                         <option value="{{ $unit_kerja->id }}">{{ $unit_kerja->name }}</option>
@@ -135,7 +136,8 @@
                                     <div class='form-group mb-3'>
                                         <label for='detail_harga' class='mb-2'>Harga</label>
                                         <input type='number' name='detail_harga[]' required
-                                            class='form-control @error('detail_harga') is-invalid @enderror' value=''>
+                                            class='form-control @error('detail_harga') is-invalid @enderror'
+                                            value=''>
                                         @error('detail_harga')
                                             <div class='invalid-feedback'>
                                                 {{ $message }}
@@ -147,7 +149,8 @@
                                     <div class='form-group mb-3'>
                                         <label for="detail_keterangan" class="mb-2">Keterangan</label>
                                         <input type='text' name='detail_keterangan[]' required
-                                            class='form-control @error('detail_keterangan') is-invalid @enderror' value=''>
+                                            class='form-control @error('detail_keterangan') is-invalid @enderror'
+                                            value=''>
                                         @error('detail_keterangan')
                                             <div class='invalid-feedback'>
                                                 {{ $message }}
@@ -188,43 +191,15 @@
 @endsection
 <x-Admin.Sweetalert />
 @push('styles')
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/ckeditor/contents.css') }}">
 @endpush
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $('#body').summernote({
-                toolbar: [
-                    ['style', ['bold', 'italic', 'underline']],
-                    ['fontsize', ['fontsize']],
-                    ['font', ['clear', 'fontname', 'fontsize', 'fontsizeunit', 'forecolor', 'backcolor',
-                        'strikethrough', 'superscript', 'subscript'
-                    ]],
-                    ['misc', ['undo', 'redo']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']]
-                ],
-                'fontNames': ['Courier', 'Franklin Gothic', 'Fran', 'Georgia', 'Jost', 'Helvetica',
-                    'Impact', 'Merriweather', 'Tahoma', 'Times', 'Verdana', 'Times New Roman'
-                ],
-                'fontNamesIgnoreCheck': ['Courier', 'Franklin Gothic', 'Fran', 'Georgia', 'Jost',
-                    'Helvetica', 'Impact', 'Merriweather', 'Tahoma', 'Times', 'Verdana',
-                    'Times New Roman'
-                ],
-
-                'lineHeights': ['0.2', '0.3', '0.4', '0.5', '0.6', '0.8', '1.0', '1.2', '1.4', '1.5', '2.0',
-                    '3.0'
-                ],
-
-                fontSizes: ['7', '8', '9', '10', '11', '12', '13', '14', '16', '18', '24', '36', '48', '64',
-                    '82'
-                ],
-                height: 400
+            CKEDITOR.replace('body', {
+                toolbar: 'Full'
             });
-
             $(".rowAdd").click(function() {
                 let newRow = `
                 <div class="row" id="row">

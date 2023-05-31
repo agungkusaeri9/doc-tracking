@@ -83,23 +83,23 @@
                                     <table class="table table-borderless">
                                         <tr>
                                             <th>No Surat</th>
-                                            <td>0812312312312</td>
+                                            <td>{{ $item->no_surat ?? '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Tanggal Surat</th>
-                                            <td>12 Februari 2023</td>
+                                            <td>{{ $item->created_at->translatedFormat('d M Y') }}</td>
                                         </tr>
                                         <tr>
                                             <th>Penandatangan</th>
-                                            <td>Ahmad, S.pd</td>
+                                            <td>{{ $item->tte_created_user->name ?? '-' }}</td>
                                         </tr>
                                         <tr>
-                                            <th>Perihalt</th>
-                                            <td>ST - Direktur Indramayu</td>
+                                            <th>Perihal</th>
+                                            <td>{{ $item->hal }}</td>
                                         </tr>
                                         <tr>
                                             <th>Unit Kerja</th>
-                                            <td>Politeknik Negri Indramayu</td>
+                                            <td>{{ $item->unit_kerja->name ?? '-' }}</td>
                                         </tr>
                                     </table>
                                 </div>

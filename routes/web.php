@@ -31,8 +31,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::redirect('/', '/login', 301);
-Route::get('/cek-surat-umum',[CekSuratController::class,'umum']);
-Route::get('/cek-surat-khusus',[CekSuratController::class,'khusus']);
+Route::get('/surat-umum/{uuid}', [CekSuratController::class, 'umum'])->name('cek-letter');
+Route::get('/surat-khusus/{uuid}', [CekSuratController::class, 'khusus'])->name('cek-document');
 
 Auth::routes(['register' => false]);
 
@@ -80,20 +80,20 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     // surat umum
     Route::get('/letter/create', [LetterController::class, 'create'])->name('letters.create');
     Route::post('/letter/create', [LetterController::class, 'store'])->name('letters.store');
-    Route::get('outbox/letter/{id}/edit', [LetterController::class, 'edit'])->name('letters.edit');
-    Route::patch('outbox/letter/{id}/edit', [LetterController::class, 'update'])->name('letters.update');
-    Route::delete('outbox/letter/{id}', [LetterController::class, 'destroy'])->name('letters.destroy');
-    Route::get('outbox/letter/{id}', [LetterController::class, 'show'])->name('letters.show');
-    Route::get('inbox/letter/{id}', [LetterController::class, 'show_inbox'])->name('letters.inbox.show');
+    Route::get('outbox/letter/{uuid}/edit', [LetterController::class, 'edit'])->name('letters.edit');
+    Route::patch('outbox/letter/{uuid}/edit', [LetterController::class, 'update'])->name('letters.update');
+    Route::delete('outbox/letter/{uuid}', [LetterController::class, 'destroy'])->name('letters.destroy');
+    Route::get('outbox/letter/{uuid}', [LetterController::class, 'show'])->name('letters.show');
+    Route::get('inbox/letter/{uuid}', [LetterController::class, 'show_inbox'])->name('letters.inbox.show');
 
     // surat khusus
     Route::get('/documents/create', [DocumentController::class, 'create'])->name('documents.create');
     Route::post('/documents/create', [DocumentController::class, 'store'])->name('documents.store');
-    Route::get('outbox/documents/{id}/edit', [DocumentController::class, 'edit'])->name('documents.edit');
-    Route::patch('outbox/documents/{id}/edit', [DocumentController::class, 'update'])->name('documents.update');
-    Route::delete('outbox/documents/{id}', [DocumentController::class, 'destroy'])->name('documents.destroy');
-    Route::get('outbox/documents/{id}', [DocumentController::class, 'show'])->name('documents.show');
-    Route::get('inbox/documents/{id}', [DocumentController::class, 'show_inbox'])->name('documents.inbox.show');
+    Route::get('outbox/documents/{uuid}/edit', [DocumentController::class, 'edit'])->name('documents.edit');
+    Route::patch('outbox/documents/{uuid}/edit', [DocumentController::class, 'update'])->name('documents.update');
+    Route::delete('outbox/documents/{uuid}', [DocumentController::class, 'destroy'])->name('documents.destroy');
+    Route::get('outbox/documents/{uuid}', [DocumentController::class, 'show'])->name('documents.show');
+    Route::get('inbox/documents/{uuid}', [DocumentController::class, 'show_inbox'])->name('documents.inbox.show');
 
     // surat masuk
     Route::get('inbox/data', [InboxController::class, 'data'])->name('inbox.data');
@@ -105,13 +105,24 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
 
     // attachmentd download
-    Route::get('letter-attachment/{id}/download',[LetterAttachmentController::class,'download'])->name('letter-attachments.download');
+    Route::get('letter-attachment/{id}/download', [LetterAttachmentController::class, 'download'])->name('letter-attachments.download');
 
     // attachmentd download
-    Route::get('document-attachment/{id}/download',[DocumentAttachmentController::class,'download'])->name('document-attachments.download');
+    Route::get('document-attachment/{id}/download', [DocumentAttachmentController::class, 'download'])->name('document-attachments.download');
 
-        // notifikasi
-        Route::get('/notifications/data', [NotificationController::class, 'data'])->name('notifications.data');
-        Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-        Route::get('/notifications/{id}/read', [NotificationController::class, 'read'])->name('notifications.read');
+    // notifikasi
+    Route::get('/notifications/data', [NotificationController::class, 'data'])->name('notifications.data');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/{id}/read', [NotificationController::class, 'read'])->name('notifications.read');
+
+
+    // tte letter
+    Route::get('tte/letters/{uuid}',[LetterController::class,'tte'])->name('letters.tte.index');
+    Route::post('tte/letters/{uuid}',[LetterController::class,'tte_create'])->name('letters.tte.create');
+    Route::get('tte/letters/{uuid}/download',[LetterController::class,'tte_download'])->name('letters.tte-download');
+
+    // tte documents
+    Route::get('tte/documents/{uuid}',[DocumentController::class,'tte'])->name('documents.tte.index');
+    Route::post('tte/documents/{uuid}',[DocumentController::class,'tte_create'])->name('documents.tte.create');
+    Route::get('tte/documents/{uuid}/download',[DocumentController::class,'tte_download'])->name('documents.tte-download');
 });

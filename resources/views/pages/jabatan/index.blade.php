@@ -175,6 +175,7 @@
                 $('body').on('click', '.btnEdit', function() {
                     let id = $(this).data('id');
                     let detail = getDetail(id);
+                    console.log(detail.nama);
                     $('#myForm #id').val(detail.id);
                     $('#myForm #nama').val(detail.nama);
 

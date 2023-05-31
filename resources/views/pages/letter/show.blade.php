@@ -33,7 +33,6 @@
                             <br>
                             <span>{{ $item->keterangan }}</span>
                         </li>
-
                         @foreach ($item->attachments as $key => $lampiran)
                             <li class="list-item mb-2">
                                 <b>Lampiran {{ $key + 1 }}</b>
@@ -44,16 +43,35 @@
                                     class="btn btn-success btn-sm">Download</a>
                             </li>
                         @endforeach
+                        @if ($item->tte_created_user_id)
+                            <li class="list-item mb-2">
+                                <b>Pembuat TTE</b>
+                                <br>
+                                <span>{{ $item->tte_created_user->name ?? '-' }}</span>
+                            </li>
+                            <li class="list-item mb-2">
+                                <b>Tanggal TTE</b>
+                                <br>
+                                <span>{{ $item->tte_created->translatedFormat('H:i:s d-m-Y') ?? '-' }}</span>
+                            </li>
+                            <li class="list-item mb-2">
+                                <b>Download File TTE</b>
+                                <br>
+                                <a href="{{ route('letters.tte-download', [
+                                    'uuid' => $item->uuid,
+                                ]) }}"
+                                    class="btn btn-success btn-sm">Download</a>
+                            </li>
+                        @endif
                     </ul>
-
                 </div>
             </div>
         </div>
     </div>
-    <div class="row mt-3">
+    <div class="row mt-3 bg-white">
         <div class="col-md-12">
             <div class="rangkasurat">
-                <table width="100%">
+                <table width="100%" class="tbl-kop">
                     <tr>
                         <td class="td-gambar">
                             <div class="text-left">
@@ -73,6 +91,30 @@
                     {!! $item->body !!}
                 </div>
             </div>
+            <table class="mt-5">
+                <tr>
+                    <td colspan="2" style="width:85%">
+
+                    </td>
+                    <td>
+                        @if ($item->tte_created_user_id)
+                            <div class="ttd-tempat-jabatan">
+                                <p>27 April 2023 <br>
+                                    Direktur</p>
+                            </div>
+                            <div class="ttd-qrcode">
+                                {{-- <img src="{{ asset('assets/images/qr_code_umum.png') }}" alt=""
+                                    class="img-fluid gambar-tte"> --}}
+                                    {!! QrCode::size(80)->generate('https://techvblogs.com/blog/generate-qr-code-laravel-8') !!}
+                            </div>
+                            <div class="tte-nama-gelar">
+                                <p>{{ $item->tte_created_user->name ?? '-' }}</p>
+                                <p>NIP {{ $item->tte_created_user->nip ?? '-' }}</p>
+                            </div>
+                        @endif
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 @endsection
@@ -87,7 +129,7 @@
             background: white;
         }
 
-        table {
+        .tbl-kop {
             border-bottom: 3px solid #000;
             padding: 2px;
         }
@@ -122,6 +164,16 @@
         .gambar {
             height: 140px;
             margin-left: -10px;
+        }
+
+        /* .tte-nama-gelar{
+                        margin-top: 70px;
+                    } */
+        .gambar-tte {
+            border-radius: 0 !important;
+            height: 80px !important;
+            width: 80px !important;
+            margin: 5px 0;
         }
     </style>
 @endpush

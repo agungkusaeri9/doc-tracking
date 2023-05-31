@@ -47,7 +47,25 @@
                                     class="btn btn-success btn-sm">Download</a>
                             </li>
                         @endforeach
-
+                        @if ($item->tte_created_user_id)
+                            <li class="list-item mb-2">
+                                <b>Pembuat TTE</b>
+                                <br>
+                                <span>{{ $item->tte_created_user->name ?? '-' }}</span>
+                            </li>
+                            <li class="list-item mb-2">
+                                <b>Tanggal TTE</b>
+                                <br>
+                                <span>{{ $item->tte_created->translatedFormat('H:i:s d-m-Y') ?? '-' }}</span>
+                            </li>
+                            <li class="list-item mb-2">
+                                <b>Download File TTE</b>
+                                <br>
+                                <a href="{{ route('documents.tte-download',[
+                                    'uuid' => $item->uuid
+                                ]) }}" class="btn btn-success btn-sm">Download</a>
+                            </li>
+                        @endif
                         <h6 class="mt-5">Detail</h6>
                         <table class="table table-hover table-striped mt-4">
                             <tr>
@@ -59,18 +77,18 @@
                                 <th>Total</th>
                             </tr>
                             @forelse ($item->details as $detail)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $detail->item }}</td>
-                                <td>{{ $detail->qty }}</td>
-                                <td>{{ $detail->keterangan }}</td>
-                                <td>Rp {{ number_format($detail->harga ,0,'.','.')}}</td>
-                                <td>Rp {{ number_format($detail->total ,0,'.','.')}}</td>
-                            </tr>
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $detail->item }}</td>
+                                    <td>{{ $detail->qty }}</td>
+                                    <td>{{ $detail->keterangan }}</td>
+                                    <td>Rp {{ number_format($detail->harga, 0, '.', '.') }}</td>
+                                    <td>Rp {{ number_format($detail->total, 0, '.', '.') }}</td>
+                                </tr>
                             @empty
-                            <tr>
-                                <td colspan="6" class="text-center">Tidak Ada!</td>
-                            </tr>
+                                <tr>
+                                    <td colspan="6" class="text-center">Tidak Ada!</td>
+                                </tr>
                             @endforelse
                         </table>
                     </ul>

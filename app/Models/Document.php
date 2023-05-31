@@ -9,6 +9,9 @@ class Document extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    protected $casts = [
+        'tte_created' => 'datetime',
+    ];
 
     public function category()
     {
@@ -38,5 +41,15 @@ class Document extends Model
     public function scopeInboxbyuser($query)
     {
         return $query->where('to_unit_kerja_id',auth()->user()->unit_kerja->id ?? 0);
+    }
+
+    public function tte_created_user()
+    {
+        return $this->belongsTo(User::class, 'tte_created_user_id', 'id');
+    }
+
+    public function qrcode()
+    {
+        return asset('storage/' . $this->qrcode);
     }
 }

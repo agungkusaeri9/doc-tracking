@@ -83,23 +83,23 @@
                                     <table class="table table-borderless">
                                         <tr>
                                             <th>Deskripsi</th>
-                                            <td>Deskripsi</td>
+                                            <td>{{ $item->deskripsi }}</td>
                                         </tr>
                                         <tr>
                                             <th>Keterangan</th>
-                                            <td>Keterangan</td>
+                                            <td>{{ $item->keterangan }}</td>
                                         </tr>
                                         <tr>
                                             <th>Penandatangan</th>
-                                            <td>Ahmad, S.pd</td>
+                                            <td>{{ $item->tte_created_user->name ?? '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Perihal</th>
-                                            <td>ST - Direktur Indramayu</td>
+                                            <td>{{ $item->hal }}</td>
                                         </tr>
                                         <tr>
                                             <th>Tanggal Surat</th>
-                                            <td>12 Februari 2023</td>
+                                            <td>{{ $item->tanggal->translatedFormat('d F Y') }}</td>
                                         </tr>
                                     </table>
                                 </div>

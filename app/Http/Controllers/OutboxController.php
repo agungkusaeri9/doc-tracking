@@ -37,12 +37,16 @@ class OutboxController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function ($model) {
                         $link_show = route('documents.show', [
-                            'id' => Crypt::encryptString($model->id, 5)
+                            'uuid' => $model->uuid ?? 0
                         ]);
                         $link_edit = route('documents.edit', [
-                            'id' => Crypt::encryptString($model->id, 5)
+                            'uuid' => $model->uuid ?? 0
                         ]);
-                        $action = "<a href='$link_show' class='btn btn-sm py-2 text-white btn-warning btnShow mx-1' ><i class='fas fa fa-eye'></i> Show</a><a href='$link_edit' class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</a><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name' data-jenis='document'><i class='fas fa fa-trash'></i> Hapus</button>";
+
+                        $link_create_tte = route('documents.tte.index', [
+                            'uuid' => $model->uuid ?? 0
+                        ]);
+                        $action = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white btn-secondary mx-1' ><i class='fas fa fa-eye'></i> TTE</a><a href='$link_show' class='btn btn-sm py-2 text-white btn-warning btnShow mx-1' ><i class='fas fa fa-eye'></i> Show</a><a href='$link_edit' class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</a><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name' data-jenis='document'><i class='fas fa fa-trash'></i> Hapus</button>";
                         return $action;
                     })
                     ->addColumn('unit_kerja', function ($model) {
@@ -60,12 +64,17 @@ class OutboxController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function ($model) {
                         $link_show = route('letters.show', [
-                            'id' => Crypt::encryptString($model->id, 5)
+                            'uuid' => $model->uuid
                         ]);
                         $link_edit = route('letters.edit', [
-                            'id' => Crypt::encryptString($model->id, 5)
+                            'uuid' => $model->uuid
                         ]);
-                        $action = "<a href='$link_show' class='btn btn-sm py-2 text-white btn-warning btnShow mx-1' ><i class='fas fa fa-eye'></i> Show</a><a href='$link_edit' class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</a><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name' data-jenis='document'><i class='fas fa fa-trash'></i> Hapus</button>";
+
+                        $link_create_tte = route('letters.tte.index', [
+                            'uuid' => $model->uuid
+                        ]);
+
+                        $action = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white btn-secondary mx-1' ><i class='fas fa fa-eye'></i> TTE</a><a href='$link_show' class='btn btn-sm py-2 text-white btn-warning btnShow mx-1' ><i class='fas fa fa-eye'></i> Show</a><a href='$link_edit' class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</a><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name' data-jenis='document'><i class='fas fa fa-trash'></i> Hapus</button>";
                         return $action;
                     })
                     ->rawColumns(['action'])

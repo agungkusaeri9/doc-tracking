@@ -3,9 +3,11 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <form action="{{ route('letters.update',[
-                    'id' => encrypt($item->id)
-                ]) }}" method="post" class="d-inline" enctype="multipart/form-data">
+                <form
+                    action="{{ route('letters.update', [
+                        'uuid' => $item->uuid,
+                    ]) }}"
+                    method="post" class="d-inline" enctype="multipart/form-data">
                     <div class="card-body row">
                         <div class="col-12">
                             <h4 class="card-title mb-5">Edit Surat Keluar</h4>
@@ -109,41 +111,14 @@
 @endsection
 <x-Admin.Sweetalert />
 @push('styles')
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/ckeditor/contents.css') }}">
 @endpush
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $('#body').summernote({
-                toolbar: [
-                    ['style', ['bold', 'italic', 'underline']],
-                    ['fontsize', ['fontsize']],
-                    ['font', ['clear', 'fontname', 'fontsize', 'fontsizeunit', 'forecolor', 'backcolor',
-                        'strikethrough', 'superscript', 'subscript'
-                    ]],
-                    ['misc', ['undo', 'redo']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']]
-                ],
-                'fontNames': ['Courier', 'Franklin Gothic', 'Fran', 'Georgia', 'Jost', 'Helvetica',
-                    'Impact', 'Merriweather', 'Tahoma', 'Times', 'Verdana', 'Times New Roman'
-                ],
-                'fontNamesIgnoreCheck': ['Courier', 'Franklin Gothic', 'Fran', 'Georgia', 'Jost',
-                    'Helvetica', 'Impact', 'Merriweather', 'Tahoma', 'Times', 'Verdana',
-                    'Times New Roman'
-                ],
-
-                'lineHeights': ['0.2', '0.3', '0.4', '0.5', '0.6', '0.8', '1.0', '1.2', '1.4', '1.5', '2.0',
-                    '3.0'
-                ],
-
-                fontSizes: ['7', '8', '9', '10', '11', '12', '13', '14', '16', '18', '24', '36', '48', '64',
-                    '82'
-                ],
-                height: 400
+            CKEDITOR.replace('body', {
+                toolbar: 'Full'
             });
         });
     </script>

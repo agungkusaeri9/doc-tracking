@@ -9,24 +9,24 @@ use Illuminate\Support\Facades\Crypt;
 
 class CekSuratController extends Controller
 {
-    public function umum()
+    public function umum($uuid)
     {
         // $id= Crypt::decryptString($id_encrypt);
         // $item = Letter::findOrFail($id);
-        $item = Letter::first();
+        $item = Letter::where('uuid',$uuid)->firstOrFail();
         return view('pages.landing.cek-surat-umum',[
-            'title' => 'Detail Surat Umum',
+            'title' => 'Detail Surat Umum' . $item->hal,
             'item' => $item
         ]);
     }
 
-    public function khusus()
+    public function khusus($uuid)
     {
         // $id= Crypt::decryptString($id_encrypt);
         // $item = Document::findOrFail($id);
-        $item = Document::first();
+        $item = Document::where('uuid',$uuid)->firstOrFail();
         return view('pages.landing.cek-surat-khusus',[
-            'title' => 'Detail Surat Khusus',
+            'title' => 'Detail Surat Khusus' . $item->hal,
             'item' => $item
         ]);
     }

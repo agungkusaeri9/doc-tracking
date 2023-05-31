@@ -73,7 +73,7 @@ class JabatanController extends Controller
     public function show($id)
     {
         if(request()->ajax()){
-            $jabatan = Jabatan::where('id',$id)->get();
+            $jabatan = Jabatan::where('id',$id)->first();
             return response()->json($jabatan);
         }
     }
