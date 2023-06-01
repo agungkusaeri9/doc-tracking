@@ -98,7 +98,6 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-
                             <div class='form-group mb-3'>
                                 <label class='mb-2' for='pns'>PNS</label>
                                 <select name="pns" id="pns" class="form-control">
@@ -138,7 +137,7 @@
                             <div class='form-group mb-3'>
                                 <label class='mb-2' for='unit_kerja_id'>Unit Kerja</label>
                                 <select name="unit_kerja_id" id="unit_kerja_id" class="form-control">
-                                    <option value="" selected disabled>Pilih Unit Kerja</option>
+                                    <option value="" selected>Pilih Unit Kerja</option>
                                     @foreach ($unit_kerjas as $unit_kerja)
                                         <option value="{{ $unit_kerja->id }}">{{ $unit_kerja->name }}</option>
                                     @endforeach
@@ -151,9 +150,9 @@
                             </div>
                             <div class='form-group mb-3'>
                                 <label for='role' class='mb-2'>Role</label>
-                                <input type='text' name='role' id="role"
-                                    class='form-control @error('role') is-invalid @enderror' value='{{ old('role') }}'
-                                    readonly>
+                                <select name="role" id="role" class="form-control">
+
+                                </select>
                                 @error('role')
                                     <div class='invalid-feedback'>
                                         {{ $message }}
@@ -188,10 +187,69 @@
 @push('scripts')
     <script>
         $(function() {
+
+            let getRolesNotUnitKerja = function() {
+                let data;
+                $.ajax({
+                    url: '{{ route('roles.get-byunitkerja') }}',
+                    type: 'JSON',
+                    method: 'GET',
+                    async: false,
+                    success: function(response) {
+                        data = response;
+                    }
+                })
+
+                return data;
+            }
+
+            // get jabatans by unit_kerja id
+            let getJabatanNotUnitkerja = function() {
+                let data;
+                $.ajax({
+                    url: '{{ route('jabatans.get-byunitkerja') }}',
+                    type: 'JSON',
+                    method: 'GET',
+                    async: false,
+                    success: function(response) {
+                        data = response;
+                    }
+                })
+
+                return data;
+            }
+
+            let data_jabatans = getJabatanNotUnitkerja();
+
+            // looping jabatan
+            $('#jabatan_id').empty();
+            $('#jabatan_id').append(
+                `<option value="">Pilih Jabatan</option>`
+            );
+            if (data_jabatans) {
+                data_jabatans.forEach(jabatan => {
+                    $('#jabatan_id').append(
+                        `<option value="${jabatan.id}">${jabatan.nama}</option>`);
+                });
+            }
+
+            // looping roles
+            let data_roles = getRolesNotUnitKerja();
+
+            $('#role').empty();
+            $('#role').append(
+                `<option value="">Pilih Role</option>`
+            );
+            if (data_roles) {
+                data_roles.forEach(role => {
+                    $('#role').append(
+                        `<option value="${role.id}">${role.name}</option>`);
+                });
+            }
+
+
             $('#unit_kerja_id').on('change', function() {
                 let unit_kerja_id = $(this).val();
-
-
                 // get role by unit kerja
                 let role = getRole(unit_kerja_id);
                 let role_name = role.role ? role.role.name : 'Tidak Mempunya Role';
@@ -209,7 +267,26 @@
                     });
                 }
 
-                $('#role').val(role_name);
+
+
+                if (unit_kerja_id) {
+                    $('#role').empty();
+                $('#role').append(
+                    `<option value="${role.name}">${role.role.name}</option>`);
+                } else {
+                    let data_roles = getRolesNotUnitKerja();
+                    $('#role').empty();
+                    $('#role').append(
+                        `<option value="">Pilih Role</option>`
+                    );
+                    if (data_roles) {
+                        data_roles.forEach(role => {
+                            $('#role').append(
+                                `<option value="${role.name}">${role.name}</option>`);
+                        });
+                    }
+                }
+
             })
 
             // get jabatans by unit_kerja id
@@ -230,6 +307,8 @@
 
                 return data;
             }
+
+
 
             // get role by unit_kerja id
             let getRole = function(unit_kerja_id) {

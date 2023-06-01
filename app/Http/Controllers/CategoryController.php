@@ -25,7 +25,7 @@ class CategoryController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
                     $link_detail = route('category-details.index') . '?category_id='. $model->id;
-                    $action = "<a href='$link_detail' class='btn btn-sm py-2 btn-warning btnDetail mx-1'><i class='fas fa fa-eye'></i> Detail</a><button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</button><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
+                    $action = "<a href='$link_detail' class='btn btn-sm py-2 btn-warning btnDetail mx-1'><i class='fas fa fa-eye'></i> Detail</a><button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name' data-code='$model->code'><i class='fas fa fa-edit'></i> Edit</button><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
                     return $action;
                 })
                 ->rawColumns(['action'])
@@ -36,7 +36,8 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => ['required', Rule::unique('categories')->ignore(request('id'))]
+            'name' => ['required', Rule::unique('categories')->ignore(request('id'))],
+            'code' => ['required', Rule::unique('categories')->ignore(request('id'))]
         ]);
 
         DB::beginTransaction();
@@ -45,6 +46,7 @@ class CategoryController extends Controller
                 'id'  => request('id')
             ], [
                 'name' => request('name'),
+                'code' => request('code')
             ]);
 
             if (request('id')) {

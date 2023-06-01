@@ -11,6 +11,7 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
+                                    <th>Code</th>
                                     <th>Name</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -43,6 +44,11 @@
                             <input type="text" class="form-control" name="name" id="name">
                             <div class="invalid-feedback"></div>
                         </div>
+                        <div class="form-group">
+                            <label for="code">Code</label>
+                            <input type="text" class="form-control" name="code" id="code">
+                            <div class="invalid-feedback"></div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -68,6 +74,10 @@
                             name: 'DT_RowIndex',
                             orderable: false,
                             searchable: false
+                        },
+                        {
+                            data: 'code',
+                            name: 'code'
                         },
                         {
                             data: 'name',
@@ -118,8 +128,10 @@
                 $('body').on('click', '.btnEdit', function() {
                     let id = $(this).data('id');
                     let name = $(this).data('name');
+                    let code = $(this).data('code');
                     $('#myForm #id').val(id);
                     $('#myForm #name').val(name);
+                    $('#myForm #code').val(code);
                     $('#myModal .modal-title').text('Edit Data');
                     $('#myModal').modal('show');
                 })

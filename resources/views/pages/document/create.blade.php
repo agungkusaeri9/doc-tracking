@@ -25,7 +25,7 @@
                                 <select name="category_id" id="category_id" class="form-control">
                                     <option value="" selected disabled>Pilih Kategori</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        <option value="{{ $category->id . '-' . $category->name }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('category_id')
@@ -105,6 +105,30 @@
                                     </div>
                                 @enderror
                             </div>
+                            <div class="d-cat-tugas d-none">
+                                <div class='form-group mb-3'>
+                                    <label for='visum_umum' class='mb-2'>File Visum Umum</label>
+                                    <input type='file' name='visum_umum'
+                                        class='form-control @error('visum_umum') is-invalid @enderror'
+                                        value='{{ old('visum_umum') }}'>
+                                    @error('visum_umum')
+                                        <div class='invalid-feedback'>
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class='form-group mb-3'>
+                                    <label for='spd' class='mb-2'>SPD</label>
+                                    <input type='file' name='spd'
+                                        class='form-control @error('spd') is-invalid @enderror'
+                                        value='{{ old('spd') }}'>
+                                    @error('spd')
+                                        <div class='invalid-feedback'>
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-12">
                             <div class="row">
@@ -112,7 +136,8 @@
                                     <div class='form-group mb-3'>
                                         <label for='detail_item' class='mb-2'>Item</label>
                                         <input type='text' name='detail_item[]' required
-                                            class='form-control @error('detail_item') is-invalid @enderror' value=''>
+                                            class='form-control @error('detail_item') is-invalid @enderror'
+                                            value=''>
                                         @error('detail_item')
                                             <div class='invalid-feedback'>
                                                 {{ $message }}
@@ -261,6 +286,19 @@
 
             $("body").on("click", ".rowDelete", function() {
                 $(this).parents("#row").remove();
+            })
+
+            $('#category_id').on('change', function(){
+                let category = $(this).val();
+                let category_split = category.split('-');
+                let category_name = category_split[1];
+
+                if(category_name === 'surat tugas' || category_name === 'Surat Tugas')
+                {
+                    $('.d-cat-tugas').removeClass('d-none');
+                }else{
+                    $('.d-cat-tugas').addClass('d-none');
+                }
             })
         });
     </script>

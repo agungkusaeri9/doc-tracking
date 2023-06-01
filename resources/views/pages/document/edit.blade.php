@@ -5,7 +5,7 @@
             <div class="card">
                 <form
                     action="{{ route('documents.update', [
-                        'uuid' => $item->uuid
+                        'uuid' => $item->uuid,
                     ]) }}"
                     method="post" class="d-inline" enctype="multipart/form-data">
                     <div class="card-body row">
@@ -31,7 +31,8 @@
                                 <select name="category_id" id="category_id" class="form-control">
                                     <option value="" selected disabled>Pilih Kategori</option>
                                     @foreach ($categories as $category)
-                                        <option @selected($category->id == $item->category_id) value="{{ $category->id }}">
+                                        <option @selected($category->id == $item->category_id)
+                                            value="{{ $category->id . '-' . $category->name }}">
                                             {{ $category->name }}</option>
                                     @endforeach
                                 </select>
@@ -114,6 +115,30 @@
                                     </div>
                                 @enderror
                             </div> --}}
+                            <div class="d-cat-tugas d-none">
+                                <div class='form-group mb-3'>
+                                    <label for='visum_umum' class='mb-2'>File Visum Umum</label>
+                                    <input type='file' name='visum_umum'
+                                        class='form-control @error('visum_umum') is-invalid @enderror'
+                                        value='{{ old('visum_umum') }}'>
+                                    @error('visum_umum')
+                                        <div class='invalid-feedback'>
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class='form-group mb-3'>
+                                    <label for='spd' class='mb-2'>SPD</label>
+                                    <input type='file' name='spd'
+                                        class='form-control @error('spd') is-invalid @enderror'
+                                        value='{{ old('spd') }}'>
+                                    @error('spd')
+                                        <div class='invalid-feedback'>
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-12">
                             @foreach ($item->details as $detail)
@@ -276,6 +301,26 @@
             $("body").on("click", ".rowDelete", function() {
                 $(this).parents("#row").remove();
             })
+
+            $('#category_id').on('change', function() {
+                let category = $(this).val();
+                let category_split = category.split('-');
+                let category_name = category_split[1];
+
+                if (category_name === 'surat tugas' || category_name === 'Surat Tugas') {
+                    $('.d-cat-tugas').removeClass('d-none');
+                } else {
+                    $('.d-cat-tugas').addClass('d-none');
+                }
+            })
+
+            let category_name = '{{ $item->category->name }}';
+
+            if (category_name === 'surat tugas' || category_name === 'Surat Tugas') {
+                $('.d-cat-tugas').removeClass('d-none');
+            } else {
+                $('.d-cat-tugas').addClass('d-none');
+            }
         });
     </script>
 @endpush

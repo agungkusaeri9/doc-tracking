@@ -28,6 +28,18 @@ class Letter extends Model
         return $query->where('to_user_id', auth()->id());
     }
 
+
+    public function scopeInboxbyuserCount($query)
+    {
+        return $query->where('to_user_id', auth()->id())->count();
+    }
+
+    public function scopeOutboxbyuserCount($query)
+    {
+        return $query->where('from_user_id', auth()->id())->count();
+    }
+
+
     public function to()
     {
         return $this->belongsTo(User::class, 'to_user_id', 'id');

@@ -52,12 +52,32 @@ class DocumentController extends Controller
 
         ]);
 
+
+        // cek kategori surat
+        $category = explode('-', request('category_id'));
+        if ($category[1] === 'Surat Tugas' || $category[1] === 'surat tugas') {
+            request()->validate([
+                'visum_umum' => ['required', 'mimes:pdf,docx'],
+                'spd' => ['required', 'mimes:pdf,docx']
+            ]);
+        }
+
         DB::beginTransaction();
         try {
+            $nomor_surat = Document::getNewCode(request('category_id'));
+
             $data = request()->only(['kode_hal', 'to_unit_kerja_id', 'to_tembusan_unit_kerja_id', 'hal', 'deskripsi', 'keterangan', 'body', 'category_id']);
+
+            // cek nama kategori
+            if ($category[1] === 'Surat Tugas' || $category[1] === 'surat tugas') {
+                $data['visum_umum'] = request()->file('visum_umum')->store('document', 'public');
+                $data['spd'] = request()->file('spd')->store('document', 'public');
+            }
 
             $data['from_user_id'] = auth()->id();
             $data['uuid'] = Uuid::uuid4();
+            $data['no_surat'] = $nomor_surat;
+            $data['category_id'] = $category[0];
             $document = Document::create($data);
             $lampiran = request()->file('lampiran');
             $detail_item = request('detail_item');
@@ -112,7 +132,7 @@ class DocumentController extends Controller
 
     public function show($uuid)
     {
-        $item = Document::where('uuid',$uuid)->first();
+        $item = Document::where('uuid', $uuid)->first();
         return view('pages.document.show', [
             'title' => 'Detail Surat',
             'item' => $item
@@ -121,7 +141,7 @@ class DocumentController extends Controller
 
     public function show_inbox($uuid)
     {
-        $item = Document::where('uuid',$uuid)->first();
+        $item = Document::where('uuid', $uuid)->first();
         return view('pages.document.show-inbox', [
             'title' => 'Detail Surat',
             'item' => $item
@@ -130,7 +150,7 @@ class DocumentController extends Controller
 
     public function edit($uuid)
     {
-        $item = Document::where('uuid',$uuid)->first();
+        $item = Document::where('uuid', $uuid)->first();
         $unit_kerjas = UnitKerja::orderBy('name', 'ASC')->get();
         $categories = Category::orderBy('name', 'ASC')->get();
         return view('pages.document.edit', [
@@ -161,11 +181,39 @@ class DocumentController extends Controller
 
         ]);
 
-        $item = Document::with('details')->where('uuid',$uuid)->first();
+        // cek kategori surat
+        if (request()->file('spd') || request()->file('visum_umum')) {
+            $category = explode('-', request('category_id'));
+            if ($category[1] === 'Surat Tugas' || $category[1] === 'surat tugas') {
+                request()->validate([
+                    'visum_umum' => ['required', 'mimes:pdf,docx'],
+                    'spd' => ['required', 'mimes:pdf,docx']
+                ]);
+            }
+        }
+
+        $item = Document::with('details')->where('uuid', $uuid)->first();
         DB::beginTransaction();
         try {
             $data = request()->only(['kode_hal', 'to_unit_kerja_id', 'to_tembusan_unit_kerja_id', 'hal', 'deskripsi', 'keterangan', 'body', 'category_id']);
 
+
+            if (request()->file('visum_umum')) {
+                if ($item->visum_umum)
+                    Storage::disk('public')->delete($item->visum_umum);
+
+                $data['visum_umum'] = request()->file('visum_umum')->store('document', 'public');
+            }
+
+            if (request()->file('spd')) {
+                if ($item->spd)
+                    Storage::disk('public')->delete($item->spd);
+
+                $data['spd'] = request()->file('spd')->store('document', 'public');
+            }
+
+            $category = explode('-', request('category_id'));
+            $data['category_id'] = $category[0];
             $data['from_user_id'] = auth()->id();
             $item->update($data);
             $lampiran = request()->file('lampiran');
@@ -239,7 +287,7 @@ class DocumentController extends Controller
 
     public function tte($uuid)
     {
-        $item = Document::where('uuid',$uuid)->firstOrFail();
+        $item = Document::where('uuid', $uuid)->firstOrFail();
         $users = User::whereNotIn('id', [auth()->id()])->get();
         return view('pages.document.tte', [
             'title' => 'TTE surat',
@@ -254,15 +302,14 @@ class DocumentController extends Controller
             'tte_pin' => ['required']
         ]);
 
-        $item = Document::where('uuid',$uuid)->firstOrFail();
+        $item = Document::where('uuid', $uuid)->firstOrFail();
 
         // cek pin TTE
-        if(!Hash::check(request()->tte_pin,auth()->user()->tte_pin))
-        {
-            return redirect()->back()->with('error','PIN TTE Invalid.');
+        if (!Hash::check(request()->tte_pin, auth()->user()->tte_pin)) {
+            return redirect()->back()->with('error', 'PIN TTE Invalid.');
         }
 
-        $url_qrcode = route('cek-letter',[
+        $url_qrcode = route('cek-letter', [
             'uuid' => $uuid
         ]);
         $image = QrCode::format('png')
@@ -278,9 +325,9 @@ class DocumentController extends Controller
             'qrcode' => $output_file
         ]);
 
-        return redirect()->route('documents.tte.index',[
+        return redirect()->route('documents.tte.index', [
             'uuid' => $uuid
-        ])->with('success','TTE created successfully');
+        ])->with('success', 'TTE created successfully');
     }
 
     public function tte_download($uuid)

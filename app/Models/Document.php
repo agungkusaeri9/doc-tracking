@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -51,5 +52,21 @@ class Document extends Model
     public function qrcode()
     {
         return asset('storage/' . $this->qrcode);
+    }
+
+    public static function getNewCode($category_id)
+    {
+        $latest = Document::latest()->first();
+        $category = Category::findOrFail($category_id);
+        if(!$latest)
+        {
+            $kode = '0001/PL42/' . $category->no_surat . '/' . Carbon::now()->format('Y');
+        }else{
+            $kode_lama = \Str::before($latest->no_surat, '/PL42');
+            $kode_baru = str_pad($kode_lama + 1, 4, '0',STR_PAD_LEFT);
+            $kode = $kode_baru . '/' . 'PL42/' . $category->code . '/' . Carbon::now()->format('Y');
+        }
+
+        return $kode;
     }
 }

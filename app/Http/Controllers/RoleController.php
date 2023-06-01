@@ -76,7 +76,14 @@ class RoleController extends Controller
     public function get_by_unitkerja()
     {
         if(request()->ajax()){
-            $role = RoleUnitKerja::with('role')->where('unit_kerja_id',request('unit_kerja_id'))->first();
+            if(request('unit_kerja_id'))
+            {
+                $role = RoleUnitKerja::with('role')->where('unit_kerja_id',request('unit_kerja_id'))->first();
+            }else{
+                // $roles = RoleUnitKerja::get()->pluck('role_id');
+                // dd($role)
+                $role = Role::get();
+            }
             return response()->json($role);
         }
     }

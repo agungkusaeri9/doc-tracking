@@ -44,7 +44,6 @@ class JabatanController extends Controller
     {
         request()->validate([
             'nama' => ['required'],
-            'unit_kerja_id' => ['required','numeric']
         ]);
 
         DB::beginTransaction();
