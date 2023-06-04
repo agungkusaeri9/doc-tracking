@@ -14,7 +14,9 @@ use App\Http\Controllers\LetterAttachmentController;
 use App\Http\Controllers\LetterController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OutboxController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\TteController;
 use App\Http\Controllers\UnitKerjaController;
 use Illuminate\Support\Facades\Route;
@@ -71,6 +73,14 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('roles/getbyunitkerja', [RoleController::class, 'get_by_unitkerja'])->name('roles.get-byunitkerja');
     Route::resource('roles', RoleController::class);
 
+    // role permission
+    Route::get('role-permissions', [RoleController::class, 'edit_role_permission'])->name('role-permissions.edit');
+    Route::post('role-permissions', [RoleController::class, 'update_role_permission'])->name('role-permissions.update');
+
+    // permissions
+    Route::get('permissions/data', [PermissionController::class, 'data'])->name('permissions.data');
+    Route::resource('permissions', PermissionController::class);
+
 
     // users
     Route::get('users/data', [UserController::class, 'data'])->name('users.data');
@@ -117,12 +127,12 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
 
     // tte letter
-    Route::get('tte/letters/{uuid}',[LetterController::class,'tte'])->name('letters.tte.index');
-    Route::post('tte/letters/{uuid}',[LetterController::class,'tte_create'])->name('letters.tte.create');
-    Route::get('tte/letters/{uuid}/download',[LetterController::class,'tte_download'])->name('letters.tte-download');
+    Route::get('tte/letters/{uuid}', [LetterController::class, 'tte'])->name('letters.tte.index');
+    Route::post('tte/letters/{uuid}', [LetterController::class, 'tte_create'])->name('letters.tte.create');
+    Route::get('tte/letters/{uuid}/download', [LetterController::class, 'tte_download'])->name('letters.tte-download');
 
     // tte documents
-    Route::get('tte/documents/{uuid}',[DocumentController::class,'tte'])->name('documents.tte.index');
-    Route::post('tte/documents/{uuid}',[DocumentController::class,'tte_create'])->name('documents.tte.create');
-    Route::get('tte/documents/{uuid}/download',[DocumentController::class,'tte_download'])->name('documents.tte-download');
+    Route::get('tte/documents/{uuid}', [DocumentController::class, 'tte'])->name('documents.tte.index');
+    Route::post('tte/documents/{uuid}', [DocumentController::class, 'tte_create'])->name('documents.tte.create');
+    Route::get('tte/documents/{uuid}/download', [DocumentController::class, 'tte_download'])->name('documents.tte-download');
 });

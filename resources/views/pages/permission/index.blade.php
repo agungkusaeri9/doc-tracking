@@ -4,16 +4,13 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-3">Categories</h4>
-                    @can('Category Create')
-                    <a href="javascript:void(0)" class="btn my-2 mb-3 btn-sm py-2 btn-primary btnAdd">Tambah Category</a>
-                    @endcan
+                    <h4 class="card-title mb-3">Permisisons</h4>
+                    <a href="javascript:void(0)" class="btn my-2 mb-3 btn-sm py-2 btn-primary btnAdd">Tambah Permission</a>
                     <div class="table-responsive">
                         <table class="table dtTable table-hover" id="dTable">
                             <thead>
                                 <tr>
-                                    <th>No.</th>
-                                    <th>Code</th>
+                                    <th widtth="10">No.</th>
                                     <th>Name</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -46,11 +43,6 @@
                             <input type="text" class="form-control" name="name" id="name">
                             <div class="invalid-feedback"></div>
                         </div>
-                        <div class="form-group">
-                            <label for="code">Code</label>
-                            <input type="text" class="form-control" name="code" id="code">
-                            <div class="invalid-feedback"></div>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -70,16 +62,12 @@
                     processing: true,
                     serverSide: true,
                     responsive: true,
-                    ajax: '{{ route('categories.data') }}',
+                    ajax: '{{ route('permissions.data') }}',
                     columns: [{
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex',
                             orderable: false,
                             searchable: false
-                        },
-                        {
-                            data: 'code',
-                            name: 'code'
                         },
                         {
                             data: 'name',
@@ -103,7 +91,7 @@
                     e.preventDefault();
                     let form = $('#myModal #myForm');
                     $.ajax({
-                        url: '{{ route('categories.store') }}',
+                        url: '{{ route('permissions.store') }}',
                         type: 'POST',
                         dataType: 'JSON',
                         data: form.serialize(),
@@ -130,10 +118,8 @@
                 $('body').on('click', '.btnEdit', function() {
                     let id = $(this).data('id');
                     let name = $(this).data('name');
-                    let code = $(this).data('code');
                     $('#myForm #id').val(id);
                     $('#myForm #name').val(name);
-                    $('#myForm #code').val(code);
                     $('#myModal .modal-title').text('Edit Data');
                     $('#myModal').modal('show');
                 })
@@ -152,7 +138,7 @@
                         confirmButtonText: 'Yakin'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            var url = "{{ route('categories.destroy', ':id') }}";
+                            var url = "{{ route('permissions.destroy', ':id') }}";
                             url = url.replace(':id', id);
                             $.ajax({
                                 url: url,

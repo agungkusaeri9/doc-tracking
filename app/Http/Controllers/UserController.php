@@ -56,7 +56,7 @@ class UserController extends Controller
                     return $model->jabatan->nama ?? '-';
                 })
                 ->addColumn('role', function ($model) {
-                    return $model->unit_kerja->role_unit->role->name ?? '-';
+                    return $model->unit_kerja->role_unit->role->name ??  $model->getRoleNames()->first();
                 })
                 ->rawColumns(['action'])
                 ->make(true);

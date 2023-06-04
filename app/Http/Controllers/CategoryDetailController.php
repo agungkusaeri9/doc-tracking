@@ -11,6 +11,15 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CategoryDetailController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:Category Detail Index')->only(['index']);
+        $this->middleware('can:Category Detail Create')->only(['store']);
+          $this->middleware('can:Category Detail Update')->only(['store']);
+          $this->middleware('can:Category Detail Delete')->only(['destroy']);
+    }
+
     public function index()
     {
         $category_id = request('category_id');

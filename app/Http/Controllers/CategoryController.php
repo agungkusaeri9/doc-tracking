@@ -10,6 +10,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:Category Index')->only(['index']);
+        $this->middleware('can:Category Create')->only(['store']);
+          $this->middleware('can:Category Update')->only(['store']);
+          $this->middleware('can:Category Delete')->only(['destroy']);
+    }
+
     public function index()
     {
         return view('pages.category.index', [
@@ -24,9 +32,25 @@ class CategoryController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
-                    $link_detail = route('category-details.index') . '?category_id='. $model->id;
-                    $action = "<a href='$link_detail' class='btn btn-sm py-2 btn-warning btnDetail mx-1'><i class='fas fa fa-eye'></i> Detail</a><button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name' data-code='$model->code'><i class='fas fa fa-edit'></i> Edit</button><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
-                    return $action;
+                    $link_detail = route('category-details.index') . '?category_id=' . $model->id;
+                    if (auth()->user()->getPermissions('Category Detail Index')) {
+                        $detail = "<a href='$link_detail' class='btn btn-sm py-2 btn-warning btnDetail mx-1'><i class='fas fa fa-eye'></i> Detail</a>";
+                    }else{
+                        $detail = '';
+                    }
+                    if (auth()->user()->getPermissions('Category Update')) {
+                        $edit = "<button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name' data-code='$model->code'><i class='fas fa fa-edit'></i> Edit</button>";
+                    }else{
+                        $edit = '';
+                    }
+                    if (auth()->user()->getPermissions('Category Delete')) {
+                        $hapus = "<button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
+                    }else{
+                        $hapus = '';
+                    }
+
+
+                    return $detail . $edit . $hapus;
                 })
                 ->rawColumns(['action'])
                 ->make(true);

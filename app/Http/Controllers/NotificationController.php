@@ -24,10 +24,16 @@ class NotificationController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
-                    $link_read = route('notifications.read', [
-                        'id' => Crypt::encryptString($model->id)
-                    ]);
-                    $action = "<a href='$link_read' class='btn btn-sm py-2 btn-primary  mx-1' >Lihat Detail</a>";
+                    if(auth()->user()->getPermissions('Notifikasi Show'))
+                    {
+                        $link_read = route('notifications.read', [
+                            'id' => Crypt::encryptString($model->id)
+                        ]);
+                        $action = "<a href='$link_read' class='btn btn-sm py-2 btn-primary  mx-1' >Lihat Detail</a>";
+                    }else{
+                        $action = '<span class="text-danger font-italic">Tidak Ada Akses</span>';
+                    }
+
                     return $action;
                 })
                 ->addColumn('tanggal', function ($model) {
@@ -37,7 +43,14 @@ class NotificationController extends Controller
                     return $model->pengirim->name ?? '-';
                 })
                 ->addColumn('status', function ($model) {
-                    return $model->status == 1 ? '<span class="badge badge-success">Sudah Dilihat</span>' : '<span class="badge badge-warning">Belum Dilihat</span>';
+
+                    if ($model->status == 1)
+                        $status = '<span class="badge badge-success">Sudah Dilihat</span>';
+                    else
+                        $status = '<span class="badge badge-warning">Belum Dilihat</span>';
+
+
+                    return $status;
                 })
                 ->rawColumns(['action', 'status'])
                 ->make(true);

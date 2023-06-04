@@ -6,6 +6,7 @@ use App\Models\RoleUnitKerja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -25,7 +26,8 @@ class RoleController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
-                    $action = "<button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</button><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
+                    $link_permission = route('role-permissions.edit') . '?role_name=' . $model->name;
+                    $action = "<a href='$link_permission' class='btn btn-sm py-2 text-white btn-warning mx-1' ><i class='fas fa fa-eye'></i> Permission</a><button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</button><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
                     return $action;
                 })
                 ->rawColumns(['action'])
@@ -93,6 +95,39 @@ class RoleController extends Controller
         if(request()->ajax()){
             $roles = Role::get();
             return response()->json($roles);
+        }
+    }
+
+    public function edit_role_permission()
+    {
+        $item = Role::with('permissions')->where('name', request('role_name'))->firstOrFail();
+        $role_permission = $item->permissions()->pluck('id');
+        return view('pages.role.role-permissions', [
+            'title' => 'Edit Role Permission',
+            'item' => $item,
+            'permissions' => Permission::whereNotIn('id',$role_permission)->orderBy('name','ASC')->get()
+        ]);
+    }
+
+    public function update_role_permission()
+    {
+        request()->validate([
+            'role_name' => ['required'],
+            'permission' => ['required']
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $data = request()->only(['role_name', 'permission']);
+            $role = Role::where('name', $data['role_name'])->firstOrFail();
+            $role->syncPermissions($data['permission']);
+
+            DB::commit();
+            return redirect()->route('roles.index')->with('success', 'Permisison updated in role successfully.');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+            return redirect()->route('roles.index')->with('error', 'System Error!.');
         }
     }
 }

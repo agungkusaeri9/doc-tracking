@@ -60,4 +60,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Jabatan::class);
     }
+
+    public function getPermissions($permission)
+    {
+        return $this->roles->map(function ($role) {
+            return $role->permissions;
+        })->collapse()->unique()->where('name',$permission)->first();
+        // return $this->roles()->first()->getAllPermissions();
+    }
 }
