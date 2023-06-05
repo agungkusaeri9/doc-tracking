@@ -10,6 +10,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PermissionController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:Permission Index')->only(['index', 'data']);
+        // $this->middleware('can:Permission Create')->only(['store']);
+        // $this->middleware('can:Permission Update')->only(['store']);
+        $this->middleware('can:Permission Delete')->only(['destroy']);
+    }
+
+
     public function index()
     {
         return view('pages.permission.index', [
@@ -24,8 +34,21 @@ class PermissionController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
-                    $action = "<button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</button><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
-                    return $action;
+                    if(auth()->user()->getPermissions('Permission Update'))
+                    {
+                        $edit = "<button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</button>";
+                    }else{
+                        $edit = "";
+                    }
+
+                    if(auth()->user()->getPermissions('Permission Delete'))
+                    {
+                        $hapus = "<button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
+                    }else{
+                        $hapus = "";
+                    }
+
+                    return $edit . $hapus;
                 })
                 ->rawColumns(['action'])
                 ->make(true);

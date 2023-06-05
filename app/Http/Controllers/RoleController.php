@@ -12,6 +12,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class RoleController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:Role Index')->only(['index', 'data']);
+        // $this->middleware('can:Role Create')->only(['store']);
+        // $this->middleware('can:Role Update')->only(['store']);
+        $this->middleware('can:Role Delete')->only(['destroy']);
+        $this->middleware('can:Role Permission')->only(['update_role_permission','edit_role_permission']);
+    }
+
     public function index()
     {
         return view('pages.role.index', [
@@ -27,8 +37,24 @@ class RoleController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
                     $link_permission = route('role-permissions.edit') . '?role_name=' . $model->name;
-                    $action = "<a href='$link_permission' class='btn btn-sm py-2 text-white btn-warning mx-1' ><i class='fas fa fa-eye'></i> Permission</a><button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</button><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
-                    return $action;
+
+                    if (auth()->user()->getPermissions('Role Permission')) {
+                        $role_permission = "<a href='$link_permission' class='btn btn-sm py-2 text-white btn-warning mx-1' ><i class='fas fa fa-eye'></i> Permission</a>";
+                    } else {
+                        $role_permission = "";
+                    }
+                    if (auth()->user()->getPermissions('Role Update')) {
+                        $edit = "<button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</button>";
+                    } else {
+                        $edit = "";
+                    }
+
+                    if (auth()->user()->getPermissions('Role Delete')) {
+                        $hapus = "<button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
+                    } else {
+                        $hapus = "";
+                    }
+                    return $role_permission . $edit . $hapus;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -77,11 +103,10 @@ class RoleController extends Controller
 
     public function get_by_unitkerja()
     {
-        if(request()->ajax()){
-            if(request('unit_kerja_id'))
-            {
-                $role = RoleUnitKerja::with('role')->where('unit_kerja_id',request('unit_kerja_id'))->first();
-            }else{
+        if (request()->ajax()) {
+            if (request('unit_kerja_id')) {
+                $role = RoleUnitKerja::with('role')->where('unit_kerja_id', request('unit_kerja_id'))->first();
+            } else {
                 // $roles = RoleUnitKerja::get()->pluck('role_id');
                 // dd($role)
                 $role = Role::get();
@@ -92,7 +117,7 @@ class RoleController extends Controller
 
     public function get()
     {
-        if(request()->ajax()){
+        if (request()->ajax()) {
             $roles = Role::get();
             return response()->json($roles);
         }
@@ -105,7 +130,7 @@ class RoleController extends Controller
         return view('pages.role.role-permissions', [
             'title' => 'Edit Role Permission',
             'item' => $item,
-            'permissions' => Permission::whereNotIn('id',$role_permission)->orderBy('name','ASC')->get()
+            'permissions' => Permission::whereNotIn('id', $role_permission)->orderBy('name', 'ASC')->get()
         ]);
     }
 
@@ -123,11 +148,11 @@ class RoleController extends Controller
             $role->syncPermissions($data['permission']);
 
             DB::commit();
-            return redirect()->route('roles.index')->with('success', 'Permisison updated in role successfully.');
+            return redirect()->back()->with('success', 'Permisison updated in role successfully.');
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollback();
-            return redirect()->route('roles.index')->with('error', 'System Error!.');
+            return redirect()->back()->with('error', 'System Error!.');
         }
     }
 }

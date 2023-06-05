@@ -46,8 +46,35 @@ class OutboxController extends Controller
                         $link_create_tte = route('documents.tte.index', [
                             'uuid' => $model->uuid ?? 0
                         ]);
-                        $action = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white btn-secondary mx-1' ><i class='fas fa fa-eye'></i> TTE</a><a href='$link_show' class='btn btn-sm py-2 text-white btn-warning btnShow mx-1' ><i class='fas fa fa-eye'></i> Show</a><a href='$link_edit' class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</a><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name' data-jenis='document'><i class='fas fa fa-trash'></i> Hapus</button>";
-                        return $action;
+
+                        if(auth()->user()->getPermissions('Surat Keluar TTE'))
+                        {
+                            $tte = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white btn-secondary mx-1' ><i class='fas fa fa-eye'></i> TTE</a>";
+                        }else{
+                            $tte = "";
+                        }
+                        if(auth()->user()->getPermissions('Surat Keluar Show'))
+                        {
+                            $detail = "<a href='$link_show' class='btn btn-sm py-2 text-white btn-warning btnShow mx-1' ><i class='fas fa fa-eye'></i> Show</a>";
+                        }else{
+                            $detail = "";
+                        }
+
+                        if(auth()->user()->getPermissions('Surat Keluar Update'))
+                        {
+                            $edit = "<a href='$link_edit' class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</a>";
+                        }else{
+                            $edit = "";
+                        }
+
+                        if(auth()->user()->getPermissions('Surat Keluar Delete'))
+                        {
+                            $hapus = "<button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name' data-jenis='document'><i class='fas fa fa-trash'></i> Hapus</button>";
+                        }else{
+                            $hapus = "";
+                        }
+
+                        return $tte . $detail . $edit . $hapus;
                     })
                     ->addColumn('unit_kerja', function ($model) {
                         return $model->unit_kerja->name ?? '-';
@@ -73,9 +100,34 @@ class OutboxController extends Controller
                         $link_create_tte = route('letters.tte.index', [
                             'uuid' => $model->uuid
                         ]);
+                        if(auth()->user()->getPermissions('Surat Keluar TTE'))
+                        {
+                            $tte = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white btn-secondary mx-1' ><i class='fas fa fa-eye'></i> TTE</a>";
+                        }else{
+                            $tte = "";
+                        }
+                        if(auth()->user()->getPermissions('Surat Keluar Show'))
+                        {
+                            $detail = "<a href='$link_show' class='btn btn-sm py-2 text-white btn-warning btnShow mx-1' ><i class='fas fa fa-eye'></i> Show</a>";
+                        }else{
+                            $detail = "";
+                        }
 
-                        $action = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white btn-secondary mx-1' ><i class='fas fa fa-eye'></i> TTE</a><a href='$link_show' class='btn btn-sm py-2 text-white btn-warning btnShow mx-1' ><i class='fas fa fa-eye'></i> Show</a><a href='$link_edit' class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</a><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name' data-jenis='document'><i class='fas fa fa-trash'></i> Hapus</button>";
-                        return $action;
+                        if(auth()->user()->getPermissions('Surat Keluar Update'))
+                        {
+                            $edit = "<a href='$link_edit' class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</a>";
+                        }else{
+                            $edit = "";
+                        }
+
+                        if(auth()->user()->getPermissions('Surat Keluar Delete'))
+                        {
+                            $hapus = "<button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name' data-jenis='document'><i class='fas fa fa-trash'></i> Hapus</button>";
+                        }else{
+                            $hapus = "";
+                        }
+
+                        return $tte . $detail . $edit . $hapus ;
                     })
                     ->rawColumns(['action'])
                     ->make(true);

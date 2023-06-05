@@ -9,6 +9,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class JabatanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:Jabatan Index')->only(['index', 'data']);
+        // $this->middleware('can:Jabatan Create')->only(['store']);
+        // $this->middleware('can:Jabatan Update')->only(['store']);
+        $this->middleware('can:Jabatan Delete')->only(['destroy']);
+    }
+
     public function index()
     {
         return view('pages.jabatan.index', [
@@ -23,8 +31,21 @@ class JabatanController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
-                    $action = "<button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</button><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
-                    return $action;
+                    if(auth()->user()->getPermissions('Jabatan Update'))
+                    {
+                        $edit =  "<button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</button>";
+                    }else{
+                        $edit = "";
+                    }
+
+                    if(auth()->user()->getPermissions('Jabatan Delete'))
+                    {
+                        $hapus = "<button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
+                    }else{
+                        $hapus = "";
+                    }
+
+                    return $edit . $hapus;
                 })
                 ->addColumn('unit_kerja', function($model){
                     return $model->unit_kerja->name ?? '-';

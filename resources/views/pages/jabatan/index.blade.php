@@ -32,7 +32,9 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title mb-3">Jabatan</h4>
-                    <a href="javascript:void(0)" class="btn my-2 mb-3 btn-sm py-2 btn-primary btnAdd">Tambah Jabatan</a>
+                    @can('Jabatan Create')
+                        <a href="javascript:void(0)" class="btn my-2 mb-3 btn-sm py-2 btn-primary btnAdd">Tambah Jabatan</a>
+                    @endcan
                     <div class="table-responsive">
                         <table class="table dtTable table-hover" id="dTable">
                             <thead>

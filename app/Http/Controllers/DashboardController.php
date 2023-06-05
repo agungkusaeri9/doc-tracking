@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:Dashboard')->only(['index']);
+    }
+
     public function index()
     {
         // $total_inbox_letter = Letter::scopeInboxbyuser->count();

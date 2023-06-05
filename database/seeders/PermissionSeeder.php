@@ -50,6 +50,7 @@ class PermissionSeeder extends Seeder
           'Role Create',
           'Role Update',
           'Role Delete',
+          'Role Permission',
           'Permission Index',
           'Permission Create',
           'Permission Update',

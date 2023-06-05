@@ -5,7 +5,9 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title mb-3">Unit Kerjas</h4>
-                    <a href="javascript:void(0)" class="btn my-2 mb-3 btn-sm py-2 btn-primary btnAdd">Tambah Unit Kerja</a>
+                    @can('Unit Kerja Create')
+                        <a href="javascript:void(0)" class="btn my-2 mb-3 btn-sm py-2 btn-primary btnAdd">Tambah Unit Kerja</a>
+                    @endcan
                     <div class="table-responsive">
                         <table class="table dtTable table-hover" id="dTable">
                             <thead>
@@ -190,7 +192,8 @@
                     data_unit_kerja.forEach(unit_kerja => {
                         let isSelected = unit_kerja.id == detail.parent_id ? 'selected' : '';
                         $('#myModal #parent_id').append(
-                            `<option ${isSelected} value="${unit_kerja.id}">${unit_kerja.name}</option>`);
+                            `<option ${isSelected} value="${unit_kerja.id}">${unit_kerja.name}</option>`
+                            );
                     });
                     $('#myModal .modal-title').text('Edit Data');
                     $('#myModal').modal('show');
@@ -231,7 +234,7 @@
                 })
 
                 // btn setRole
-                $('body').on('click', '.btnSetRole',  function() {
+                $('body').on('click', '.btnSetRole', function() {
                     let id = $(this).data('id');
                     let role_unit_kerja_id = $(this).data('roleunitid')
                     let role_id = $(this).data('roleid');
@@ -254,8 +257,8 @@
                     $('#modalSetRole').modal('show');
                 })
 
-                 // btn submit set role
-                 $('#modalSetRole #formSetRole').on('submit', function(e) {
+                // btn submit set role
+                $('#modalSetRole #formSetRole').on('submit', function(e) {
                     e.preventDefault();
                     let form = $('#modalSetRole #formSetRole');
                     $.ajax({
@@ -298,8 +301,8 @@
                     return data;
                 }
 
-                 // get get roles
-                 let getRoles = function(id) {
+                // get get roles
+                let getRoles = function(id) {
                     let data;
                     $.ajax({
                         url: '{{ route('roles.get-json') }}',
