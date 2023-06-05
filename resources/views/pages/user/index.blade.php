@@ -40,7 +40,9 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title mb-3">Users</h4>
+                    @can('User Create')
                     <a href="{{ route('users.create') }}" class="btn my-2 mb-3 btn-sm py-2 btn-primary btnAdd">Tambah User</a>
+                    @endcan
                     <div class="table-responsive">
                         <table class="table dtTable table-hover" id="dTable">
                             <thead>

@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
     public function index()
     {
-        return view('pages.profile',[
+        return view('pages.profile', [
             'title' => 'Profile'
         ]);
     }
@@ -19,28 +20,41 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
         request()->validate([
-            'name' => ['required','min:3'],
-            'email' => ['required','unique:users,email,'.$user->id.''],
+            'name' => ['required', 'min:3'],
+            'email' => ['required', 'unique:users,email,' . $user->id . ''],
             'role' => ['required'],
-            'avatar' => ['image','mimes:jpg,jpeg,png,svg','max:2048']
+            'username' => ['required', Rule::unique('users','username')->ignore($user->id), 'alpha_dash'],
+            'avatar' => ['image', 'mimes:jpg,jpeg,png,svg', 'max:2048']
         ]);
 
-        if(request('password'))
-        {
+        if (request('password')) {
             request()->validate([
-                'password' => ['min:5','confirmed'],
+                'password' => ['min:5', 'confirmed'],
             ]);
+        }
+
+        // jika ada tte_pin
+        if (request('tte_pin')) {
+            request()->validate([
+                'tte_pin' => ['required', 'min:5']
+            ]);
+
+            $tte_pin = bcrypt(request('tte_pin'));
+        } else {
+            $tte_pin = $user->tte_pin;
         }
 
         DB::beginTransaction();
         try {
-            $data = request()->only(['name','email']);
+
+            $data = request()->only(['name', 'email','username','tte_pin']);
             request('password') ? $data['password'] = bcrypt(request('password')) : NULL;
-            request()->file('avatar') ? $data['avatar'] = request()->file('avatar')->store('users','public') : NULL;
+            request()->file('avatar') ? $data['avatar'] = request()->file('avatar')->store('users', 'public') : NULL;
+            $data['tte_pin'] = $tte_pin;
             $user->update($data);
 
             DB::commit();
-            return redirect()->route('profile.index')->with('success','Profile berhasil diupdate.');
+            return redirect()->route('profile.index')->with('success', 'Profile berhasil diupdate.');
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;

@@ -11,6 +11,12 @@ use Yajra\DataTables\Facades\DataTables;
 
 class InboxController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:Surat Masuk Index')->only(['index']);
+    }
+
     public function index()
     {
         $tahun_sekarang = Carbon::now()->format('Y');

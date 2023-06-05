@@ -5,7 +5,7 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title mb-5">Edit Profile</h4>
-                    <form action="{{ route('admin.profile.update') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('profile.update') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class='form-group mb-3'>
                             <label for='avatar' class='mb-2'>Avatar</label>
@@ -28,10 +28,31 @@
                             @enderror
                         </div>
                         <div class='form-group mb-3'>
+                            <label for='username' class='mb-2'>Username</label>
+                            <input type='text' name='username'
+                                class='form-control @error('username') is-invalid @enderror'
+                                value='{{ auth()->user()->username ?? old('username') }}'>
+                            @error('username')
+                                <div class='invalid-feedback'>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class='form-group mb-3'>
                             <label for='email' class='mb-2'>Email</label>
                             <input type='text' name='email' class='form-control @error('email') is-invalid @enderror'
-                                value='{{ auth()->user()->email ?? old('email') }}'>
+                                value='{{ auth()->user()->email ?? old('email') }}' readonly>
                             @error('email')
+                                <div class='invalid-feedback'>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class='form-group mb-3'>
+                            <label for='nip' class='mb-2'>NIP</label>
+                            <input type='text' name='nip' class='form-control @error('nip') is-invalid @enderror'
+                                value='{{ auth()->user()->nip ?? old('nip') }}' readonly>
+                            @error('nip')
                                 <div class='invalid-feedback'>
                                     {{ $message }}
                                 </div>
@@ -40,8 +61,21 @@
                         <div class='form-group mb-3'>
                             <label for='role' class='mb-2'>Role</label>
                             <input type='text' name='role' class='form-control @error('role') is-invalid @enderror'
-                                value='{{ auth()->user()->role ?? old('role') }}' readonly>
+                                value='{{ auth()->user()->getRoleNames()->first() ?? old('role') }}' readonly>
                             @error('role')
+                                <div class='invalid-feedback'>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class='form-group mb-3'>
+                            <label for='tte_pin' class='mb-2'>PIN TTE (<span class="text-danger small">Kosongkan
+                                    jika tidak
+                                    ingin merubah PIN TTE</span> )</label>
+                            <input type='password' name='tte_pin'
+                                class='form-control @error('tte_pin') is-invalid @enderror'
+                                value='{{ old('tte_pin') }}'>
+                            @error('tte_pin')
                                 <div class='invalid-feedback'>
                                     {{ $message }}
                                 </div>
@@ -72,6 +106,7 @@
                                 </div>
                             @enderror
                         </div>
+
                         <div class="form-group text-right">
                             <button class="btn btn-primary">Update Profile</button>
                         </div>

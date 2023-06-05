@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Document;
+use App\Models\Letter;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -9,6 +11,12 @@ use Yajra\DataTables\Facades\DataTables;
 
 class NotificationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:Notifikasi Index')->only(['index']);
+        $this->middleware('can:Notifikasi Show')->only(['show']);
+    }
+
     public function index()
     {
 
@@ -24,7 +32,7 @@ class NotificationController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
-                    if(auth()->user()->getPermissions('Notifikasi Show'))
+                    if(cek_user_permission('Notifikasi Show'))
                     {
                         $link_read = route('notifications.read', [
                             'id' => Crypt::encryptString($model->id)
@@ -64,12 +72,14 @@ class NotificationController extends Controller
 
         $notif->status == 0 ?  $notif->update(['status' => 1]) : NULL;
         if ($notif->jenis === 'umum') {
+            $letter = Letter::findOrFail($notif->surat_id);
             return redirect()->route('letters.inbox.show', [
-                'id' => Crypt::encryptString($notif->surat_id),
+                'uuid' => $letter->uuid,
             ]);
         } else {
+            $document = Document::findOrFail($notif->surat_id);
             return redirect()->route('documents.inbox.show', [
-                'id' => Crypt::encryptString($notif->surat_id),
+                'uuid' => $document->uuid,
             ]);
         }
     }

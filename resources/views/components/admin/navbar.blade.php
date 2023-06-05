@@ -15,7 +15,7 @@ z<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
                     <img src="{{ auth()->user()->avatar() }}" alt="profile" />
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                    @can('Edit Profile')
+                    @can('Profile Edit')
                         <a class="dropdown-item" href="{{ route('profile.index') }}">
                             <i class="ti-user text-primary"></i>
                             Edit Profile

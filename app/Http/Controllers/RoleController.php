@@ -38,18 +38,18 @@ class RoleController extends Controller
                 ->addColumn('action', function ($model) {
                     $link_permission = route('role-permissions.edit') . '?role_name=' . $model->name;
 
-                    if (auth()->user()->getPermissions('Role Permission')) {
+                    if (cek_user_permission('Role Permission')) {
                         $role_permission = "<a href='$link_permission' class='btn btn-sm py-2 text-white btn-warning mx-1' ><i class='fas fa fa-eye'></i> Permission</a>";
                     } else {
                         $role_permission = "";
                     }
-                    if (auth()->user()->getPermissions('Role Update')) {
+                    if (cek_user_permission('Role Update')) {
                         $edit = "<button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</button>";
                     } else {
                         $edit = "";
                     }
 
-                    if (auth()->user()->getPermissions('Role Delete')) {
+                    if (cek_user_permission('Role Delete')) {
                         $hapus = "<button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
                     } else {
                         $hapus = "";

@@ -20,6 +20,12 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class LetterController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:Surat Umum Create')->only(['store','create']);
+    }
+
     public function create()
     {
         $users = User::whereNotIn('id', [auth()->id()])->get();

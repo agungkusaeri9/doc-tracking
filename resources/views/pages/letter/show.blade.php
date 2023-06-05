@@ -68,55 +68,6 @@
             </div>
         </div>
     </div>
-    <div class="row mt-3 bg-white">
-        <div class="col-md-12">
-            <div class="rangkasurat">
-                <table width="100%" class="tbl-kop">
-                    <tr>
-                        <td class="td-gambar">
-                            <div class="text-left">
-                                <img src="{{ asset('assets/images/polindra.png') }}" class="gambar" />
-                            </div>
-                        </td>
-                        <td class="tengah">
-                            <div class="jd1">KEMENTRIAN PENDIDIKAN, KEBUDAYAAN, <br> RISET DAN TEKNOLOGI</div>
-                            <div class="jd2">POLITEKNIK NEGERI INDRAMAYU</div>
-                            <div class="jd3">Jalan Raya Lohbener Lama Nomor 8 Lohbener - Indramayu 45353</div>
-                            <div class="jd3">Telepon/Faximile: (0234) 5746</div>
-                            <div class="jd3">Laman: https://www.polindra.ac.id e-mail: info@polindra.ac.id</div>
-                        </td>
-                    </tr>
-                </table>
-                <div class="body mt-4">
-                    {!! $item->body !!}
-                </div>
-            </div>
-            <table class="mt-5">
-                <tr>
-                    <td colspan="2" style="width:85%">
-
-                    </td>
-                    <td>
-                        @if ($item->tte_created_user_id)
-                            <div class="ttd-tempat-jabatan">
-                                <p>27 April 2023 <br>
-                                    Direktur</p>
-                            </div>
-                            <div class="ttd-qrcode">
-                                {{-- <img src="{{ asset('assets/images/qr_code_umum.png') }}" alt=""
-                                    class="img-fluid gambar-tte"> --}}
-                                    {!! QrCode::size(80)->generate('https://techvblogs.com/blog/generate-qr-code-laravel-8') !!}
-                            </div>
-                            <div class="tte-nama-gelar">
-                                <p>{{ $item->tte_created_user->name ?? '-' }}</p>
-                                <p>NIP {{ $item->tte_created_user->nip ?? '-' }}</p>
-                            </div>
-                        @endif
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
 @endsection
 <x-Admin.Sweetalert />
 

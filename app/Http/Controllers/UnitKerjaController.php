@@ -36,19 +36,19 @@ class UnitKerjaController extends Controller
                     $role_unit_id = $model->role_unit->id ?? NULL;
                     $role_id = $model->role_unit->role_id ?? NULL;
 
-                    if (auth()->user()->getPermissions('Unit Kerja Role Add')) {
+                    if (cek_user_permission('Unit Kerja Role Add')) {
                         $set_role = "<button class='btn btn-sm py-2 btn-warning btnSetRole mx-1' data-id='$model->id' data-roleunitid='$role_unit_id' data-roleid='$role_id'><i class='fas fa fa-edit'></i> Set Role</button>";
                     } else {
                         $set_role = "";
                     }
 
-                    if (auth()->user()->getPermissions('Unit Kerja Update')) {
+                    if (cek_user_permission('Unit Kerja Update')) {
                         $edit = "<button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</button>";
                     } else {
                         $edit = "";
                     }
 
-                    if (auth()->user()->getPermissions('Unit Kerja Delete')) {
+                    if (cek_user_permission('Unit Kerja Delete')) {
                         $hapus = "<button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
                     } else {
                         $hapus = "";

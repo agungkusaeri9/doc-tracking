@@ -13,6 +13,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:User Index')->only(['index', 'data']);
+        $this->middleware('can:User Create')->only(['store','create']);
+        $this->middleware('can:User Update')->only(['update','edit']);
+        $this->middleware('can:User Delete')->only(['destroy']);
+    }
+
     public function index()
     {
         return view('pages.user.index', [
@@ -28,8 +36,20 @@ class UserController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
                     $link_edit = route('users.edit',$model->id);
-                    $action = "<a href='$link_edit' class='btn btn-sm py-2 btn-info  mx-1' ><i class='fas fa fa-edit'></i> Edit</a><button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
-                    return $action;
+                    if(cek_user_permission('User Update'))
+                    {
+                        $edit = "<a href='$link_edit' class='btn btn-sm py-2 btn-info  mx-1' ><i class='fas fa fa-edit'></i> Edit</a>";
+                    }else{
+                        $edit = "";
+                    }
+
+                    if(cek_user_permission('User Delete'))
+                    {
+                        $hapus = "<button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
+                    }else{
+                        $hapus = "";
+                    }
+                    return $edit . $hapus;
                 })
                 ->filter(function ($instance) use ($request) {
 

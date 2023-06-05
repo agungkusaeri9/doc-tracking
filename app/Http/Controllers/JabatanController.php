@@ -31,14 +31,14 @@ class JabatanController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
-                    if(auth()->user()->getPermissions('Jabatan Update'))
+                    if(cek_user_permission('Jabatan Update'))
                     {
                         $edit =  "<button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</button>";
                     }else{
                         $edit = "";
                     }
 
-                    if(auth()->user()->getPermissions('Jabatan Delete'))
+                    if(cek_user_permission('Jabatan Delete'))
                     {
                         $hapus = "<button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
                     }else{

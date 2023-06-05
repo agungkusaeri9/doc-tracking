@@ -58,54 +58,59 @@
                             <li class="list-item mb-2">
                                 <b>Download File TTE</b>
                                 <br>
-                                <a href="{{ route('letters.tte-download',[
-                                    'uuid' => $item->uuid
-                                ]) }}" class="btn btn-success btn-sm">Download</a>
+                                <a href="{{ route('letters.tte-download', [
+                                    'uuid' => $item->uuid,
+                                ]) }}"
+                                    class="btn btn-success btn-sm">Download</a>
                             </li>
                         @endif
                     </ul>
-                    @if ($item->tte_created == null)
-                        <form action="{{ route('letters.tte.create',[
-                            'uuid' => $item->uuid
-                        ]) }}" method="post">
-                            @csrf
-                            <div class='form-group mb-3'>
-                                <label for='pembuat_tte' class='mb-2'>Pembuat TTE</label>
-                                <input type='text' class='form-control @error('pembuat_tte') is-invalid @enderror'
-                                    value='{{ auth()->user()->name }}' readonly>
-                                @error('pembuat_tte')
-                                    <div class='invalid-feedback'>
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
+                    @canany(['Surat Masuk TTE', 'Surat Keluar TTE'])
+                        @if ($item->tte_created == null)
+                            <form
+                                action="{{ route('letters.tte.create', [
+                                    'uuid' => $item->uuid,
+                                ]) }}"
+                                method="post">
+                                @csrf
+                                <div class='form-group mb-3'>
+                                    <label for='pembuat_tte' class='mb-2'>Pembuat TTE</label>
+                                    <input type='text' class='form-control @error('pembuat_tte') is-invalid @enderror'
+                                        value='{{ auth()->user()->name }}' readonly>
+                                    @error('pembuat_tte')
+                                        <div class='invalid-feedback'>
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
 
-                            <div class='form-group mb-3'>
-                                <label for='tanggal_dibuar' class='mb-2'>Tanggal Dibuat</label>
-                                <input type='text' class='form-control @error('tanggal_dibuar') is-invalid @enderror'
-                                    value='{{ Carbon\Carbon::now()->translatedFormat('H:i:s d-m-Y') }}' readonly>
-                                @error('tanggal_dibuar')
-                                    <div class='invalid-feedback'>
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                            <div class='form-group mb-3'>
-                                <label for='tte_pin' class='mb-2'>PIN TTE</label>
-                                <input type='password' name='tte_pin'
-                                    class='form-control @error('tte_pin') is-invalid @enderror'
-                                    value='{{ old('tte_pin') }}'>
-                                @error('tte_pin')
-                                    <div class='invalid-feedback'>
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                            <div class="form-group float-right">
-                                <button class="btn btn-primary">Submit</button>
-                            </div>
-                        </form>
-                    @endif
+                                <div class='form-group mb-3'>
+                                    <label for='tanggal_dibuar' class='mb-2'>Tanggal Dibuat</label>
+                                    <input type='text' class='form-control @error('tanggal_dibuar') is-invalid @enderror'
+                                        value='{{ Carbon\Carbon::now()->translatedFormat('H:i:s d-m-Y') }}' readonly>
+                                    @error('tanggal_dibuar')
+                                        <div class='invalid-feedback'>
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class='form-group mb-3'>
+                                    <label for='tte_pin' class='mb-2'>PIN TTE</label>
+                                    <input type='password' name='tte_pin'
+                                        class='form-control @error('tte_pin') is-invalid @enderror'
+                                        value='{{ old('tte_pin') }}'>
+                                    @error('tte_pin')
+                                        <div class='invalid-feedback'>
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group float-right">
+                                    <button class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        @endif
+                    @endcanany
                 </div>
             </div>
         </div>

@@ -271,8 +271,8 @@
 
                 if (unit_kerja_id) {
                     $('#role').empty();
-                $('#role').append(
-                    `<option value="${role.name}">${role.role.name}</option>`);
+                    $('#role').append(
+                        `<option value="${role.name}">${role.role.name}</option>`);
                 } else {
                     let data_roles = getRolesNotUnitKerja();
                     $('#role').empty();

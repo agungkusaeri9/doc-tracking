@@ -21,6 +21,14 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class DocumentController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:Surat Umum Create')->only(['store','create']);
+        $this->middleware('can:Surat Masuk TTE')->only(['tte_create']);
+        // $this->middleware('can:Surat Keluar TTE')->only(['store','create']);
+    }
+
     public function create()
     {
         $unit_kerjas = UnitKerja::orderBy('name', 'ASC')->get();

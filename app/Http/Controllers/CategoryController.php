@@ -14,8 +14,8 @@ class CategoryController extends Controller
     {
         $this->middleware('can:Category Index')->only(['index']);
         $this->middleware('can:Category Create')->only(['store']);
-          $this->middleware('can:Category Update')->only(['store']);
-          $this->middleware('can:Category Delete')->only(['destroy']);
+        $this->middleware('can:Category Update')->only(['store']);
+        $this->middleware('can:Category Delete')->only(['destroy']);
     }
 
     public function index()
@@ -33,19 +33,19 @@ class CategoryController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
                     $link_detail = route('category-details.index') . '?category_id=' . $model->id;
-                    if (auth()->user()->getPermissions('Category Detail Index')) {
+                    if (cek_user_permission('Category Detail Index')) {
                         $detail = "<a href='$link_detail' class='btn btn-sm py-2 btn-warning btnDetail mx-1'><i class='fas fa fa-eye'></i> Detail</a>";
-                    }else{
+                    } else {
                         $detail = '';
                     }
-                    if (auth()->user()->getPermissions('Category Update')) {
+                    if (cek_user_permission('Category Update')) {
                         $edit = "<button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name' data-code='$model->code'><i class='fas fa fa-edit'></i> Edit</button>";
-                    }else{
+                    } else {
                         $edit = '';
                     }
-                    if (auth()->user()->getPermissions('Category Delete')) {
+                    if (cek_user_permission('Category Delete')) {
                         $hapus = "<button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
-                    }else{
+                    } else {
                         $hapus = '';
                     }
 

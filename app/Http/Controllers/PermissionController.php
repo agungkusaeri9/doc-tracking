@@ -34,14 +34,14 @@ class PermissionController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
-                    if(auth()->user()->getPermissions('Permission Update'))
+                    if(cek_user_permission('Permission Update'))
                     {
                         $edit = "<button class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</button>";
                     }else{
                         $edit = "";
                     }
 
-                    if(auth()->user()->getPermissions('Permission Delete'))
+                    if(cek_user_permission('Permission Delete'))
                     {
                         $hapus = "<button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
                     }else{
