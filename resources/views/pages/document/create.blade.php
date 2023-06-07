@@ -130,7 +130,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        {{-- <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class='form-group mb-3'>
@@ -188,7 +188,7 @@
                                 </div>
                             </div>
                             <div class="newInput"></div>
-                        </div>
+                        </div> --}}
                         <div class="col-md-12">
                             <div class='form-group mb-3'>
                                 <label for='body' class='mb-2'>Isi Surat</label>

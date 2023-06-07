@@ -66,7 +66,7 @@
                                 ]) }}" class="btn btn-success btn-sm">Download</a>
                             </li>
                         @endif
-                        <h6 class="mt-5">Detail</h6>
+                        {{-- <h6 class="mt-5">Detail</h6>
                         <table class="table table-hover table-striped mt-4">
                             <tr>
                                 <th>No.</th>
@@ -90,7 +90,7 @@
                                     <td colspan="6" class="text-center">Tidak Ada!</td>
                                 </tr>
                             @endforelse
-                        </table>
+                        </table> --}}
                     </ul>
                 </div>
             </div>

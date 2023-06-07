@@ -4,8 +4,8 @@
             <li class="nav-item">
                 <a class="btn btn-primary mx-3 mb-3" data-toggle="collapse" href="#letter" aria-expanded="false"
                     aria-controls="letter">
-
-                    <span class="menu-title">Kirim Surat</span>
+                    <i class="material-icons">send</i>
+                    <span class="menu-title ml-2 ">Kirim Surat</span>
                 </a>
                 <div class="collapse" id="letter">
                     <ul class="bg-white flex-column sub-menu unstyled-list" style="list-style: none">
@@ -27,7 +27,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('dashboard') }}">
                     <i class="material-icons-two-tone">dashboard</i>
-                    <span class="menu-title">Dashboard</span>
+                    <span class="menu-title ml-2 ">Dashboard</span>
                 </a>
             </li>
         @endcan
@@ -36,7 +36,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('notifications.index') }}">
                     <i class="material-icons-two-tone">notifications</i>
-                    <span class="menu-title">Notifikasi</span>
+                    <span class="menu-title ml-2 ">Notifikasi</span>
                 </a>
             </li>
         @endcan
@@ -46,7 +46,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('categories.index') }}">
                     <i class="material-icons-two-tone">category</i>
-                    <span class="menu-title">Category</span>
+                    <span class="menu-title ml-2 ">Category</span>
                 </a>
             </li>
         @endcan
@@ -54,7 +54,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('inbox.index') }}">
                     <i class="material-icons-two-tone">inbox</i>
-                    <span class="menu-title">Surat Masuk</span>
+                    <span class="menu-title ml-2 ">Surat Masuk</span>
                 </a>
             </li>
         @endcan
@@ -62,7 +62,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('outbox.index') }}">
                     <i class="material-icons-two-tone">outbox</i>
-                    <span class="menu-title">Surat Keluar</span>
+                    <span class="menu-title ml-2 ">Surat Keluar</span>
                 </a>
             </li>
         @endcan
@@ -70,7 +70,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('unit-kerjas.index') }}">
                     <i class="material-icons-two-tone">assignment_ind</i>
-                    <span class="menu-title">Unit Kerja</span>
+                    <span class="menu-title ml-2 ">Unit Kerja</span>
                 </a>
             </li>
         @endcan
@@ -78,7 +78,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('jabatans.index') }}">
                     <i class="material-icons-two-tone">verified_user</i>
-                    <span class="menu-title">Jabatan</span>
+                    <span class="menu-title ml-2 ">Jabatan</span>
                 </a>
             </li>
         @endcan
@@ -86,7 +86,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('roles.index') }}">
                     <i class="material-icons-two-tone">verified_user</i>
-                    <span class="menu-title">Role</span>
+                    <span class="menu-title ml-2 ">Role</span>
                 </a>
             </li>
         @endcan
@@ -94,7 +94,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('permissions.index') }}">
                     <i class="material-icons-two-tone">verified_user</i>
-                    <span class="menu-title">Permission</span>
+                    <span class="menu-title ml-2 ">Permission</span>
                 </a>
             </li>
         @endcan
@@ -102,7 +102,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('users.index') }}">
                     <i class="material-icons-two-tone">people</i>
-                    <span class="menu-title">Users</span>
+                    <span class="menu-title ml-2 ">Users</span>
                 </a>
             </li>
         @endcan

@@ -104,21 +104,21 @@ class DocumentController extends Controller
             }
 
 
-            // insert document detail
-            if (count($detail_item) > 0) {
-                foreach ($detail_item as $key => $item) {
-                    $qty = $detail_qty[$key];
-                    $harga = $detail_harga[$key];
-                    $total = $qty * $harga;
-                    $document->details()->create([
-                        'item' => $item,
-                        'qty' => $detail_qty[$key],
-                        'harga' => $detail_harga[$key],
-                        'keterangan' => $detail_keterangan[$key],
-                        'total' => $total
-                    ]);
-                }
-            }
+            // // insert document detail
+            // if (count($detail_item) > 0) {
+            //     foreach ($detail_item as $key => $item) {
+            //         $qty = $detail_qty[$key];
+            //         $harga = $detail_harga[$key];
+            //         $total = $qty * $harga;
+            //         $document->details()->create([
+            //             'item' => $item,
+            //             'qty' => $detail_qty[$key],
+            //             'harga' => $detail_harga[$key],
+            //             'keterangan' => $detail_keterangan[$key],
+            //             'total' => $total
+            //         ]);
+            //     }
+            // }
 
             // send notifikasi
             Notification::create([

@@ -46,12 +46,12 @@ class InboxController extends Controller
                         $link_create_tte = route('documents.tte.index', [
                             'uuid' => $model->uuid ?? 0
                         ]);
-                        if (auth()->user()->getPermissions('Surat Masuk TTE')) {
+                        if (cek_user_permission('Surat Masuk TTE')) {
                             $tte = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white btn-secondary mx-1' ><i class='fas fa fa-eye'></i> TTE</a>";
                         } {
                             $tte = "";
                         }
-                        if (auth()->user()->getPermissions('Surat Masuk Show')) {
+                        if (cek_user_permission('Surat Masuk Show')) {
                             $detail = "<a href='$link_detail' class='btn btn-sm py-2 btn-warning mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> View</a>";
                         }
                         return $tte  . $detail;
@@ -78,13 +78,13 @@ class InboxController extends Controller
                         $link_create_tte = route('letters.tte.index', [
                             'uuid' => $model->uuid ?? 0
                         ]);
-                       if(auth()->user()->getPermissions('Surat Masuk TTE'))
+                       if(cek_user_permission('Surat Masuk TTE'))
                        {
                         $tte = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white btn-secondary mx-1' ><i class='fas fa fa-eye'></i> TTE</a>";
                        }else{
                         $tte = "";
                        }
-                       if(auth()->user()->getPermissions('Surat Masuk Show'))
+                       if(cek_user_permission('Surat Masuk Show'))
                        {
                         $detail = "<a href='$link_detail' class='btn btn-sm py-2 btn-warning mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> View</a>";
                        }else{

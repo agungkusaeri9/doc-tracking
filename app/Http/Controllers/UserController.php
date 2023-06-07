@@ -16,8 +16,8 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('can:User Index')->only(['index', 'data']);
-        $this->middleware('can:User Create')->only(['store','create']);
-        $this->middleware('can:User Update')->only(['update','edit']);
+        $this->middleware('can:User Create')->only(['store', 'create']);
+        $this->middleware('can:User Update')->only(['update', 'edit']);
         $this->middleware('can:User Delete')->only(['destroy']);
     }
 
@@ -35,18 +35,16 @@ class UserController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
-                    $link_edit = route('users.edit',$model->id);
-                    if(cek_user_permission('User Update'))
-                    {
+                    $link_edit = route('users.edit', $model->id);
+                    if (cek_user_permission('User Update')) {
                         $edit = "<a href='$link_edit' class='btn btn-sm py-2 btn-info  mx-1' ><i class='fas fa fa-edit'></i> Edit</a>";
-                    }else{
+                    } else {
                         $edit = "";
                     }
 
-                    if(cek_user_permission('User Delete'))
-                    {
+                    if (cek_user_permission('User Delete')) {
                         $hapus = "<button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-trash'></i> Hapus</button>";
-                    }else{
+                    } else {
                         $hapus = "";
                     }
                     return $edit . $hapus;
@@ -56,13 +54,10 @@ class UserController extends Controller
                     if ($request->get('unit_kerja_select')) {
                         $instance->where('unit_kerja_id', $request->unit_kerja_select);
                     }
+
                     if ($request->get('role_select')) {
-                        $instance->whereHas('unit_kerja', function ($q) use ($request) {
-                            $q->whereHas('role_unit', function ($role_unit) use ($request) {
-                                $role_unit->whereHas('role', function ($role) use ($request) {
-                                    $role->where('id', $request->role_select);
-                                });
-                            });
+                        $instance->whereHas('roles', function ($q) use ($request) {
+                            $q->where('name', $request->get('role_select'));
                         });
                     }
                 })
@@ -94,12 +89,13 @@ class UserController extends Controller
 
     public function store()
     {
+
         request()->validate([
             'name' => ['required'],
             'username' => ['required', 'unique:users,username', 'alpha_dash'],
             'email' => ['required', 'unique:users,email', 'email'],
             'password' => ['required', 'min:8'],
-            'tte_pin' => ['required','min:5']
+            'tte_pin' => ['required', 'min:5']
         ]);
 
 
@@ -127,7 +123,8 @@ class UserController extends Controller
             DB::commit();
             return redirect()->route('users.index')->with('success', 'User created successfully.');
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
+
             DB::rollBack();
             return redirect()->route('users.index')->with('error', 'System Error!');
         }
@@ -149,35 +146,33 @@ class UserController extends Controller
 
         request()->validate([
             'name' => ['required'],
-            'username' => ['required', Rule::unique('users','username')->ignore($id), 'alpha_dash'],
-            'email' => ['required', Rule::unique('users','email')->ignore($id), 'email']
+            'username' => ['required', Rule::unique('users', 'username')->ignore($id), 'alpha_dash'],
+            'email' => ['required', Rule::unique('users', 'email')->ignore($id), 'email']
         ]);
 
         $user = User::findOrFail($id);
 
         // jika ada password
-        if(request('password'))
-        {
+        if (request('password')) {
             request()->validate([
-                'password' => ['required','min:8']
+                'password' => ['required', 'min:8']
             ]);
 
             $password = bcrypt(request('password'));
-        }else{
+        } else {
             $password = $user->password;
         }
 
-         // jika ada tte_pin
-         if(request('tte_pin'))
-         {
-             request()->validate([
-                 'tte_pin' => ['required','min:5']
-             ]);
+        // jika ada tte_pin
+        if (request('tte_pin')) {
+            request()->validate([
+                'tte_pin' => ['required', 'min:5']
+            ]);
 
-             $tte_pin = bcrypt(request('tte_pin'));
-         }else{
-             $tte_pin = $user->tte_pin;
-         }
+            $tte_pin = bcrypt(request('tte_pin'));
+        } else {
+            $tte_pin = $user->tte_pin;
+        }
 
 
         DB::beginTransaction();
@@ -185,11 +180,10 @@ class UserController extends Controller
         try {
 
             // jika ada foto yg diupload
-            if(request()->file('foto'))
-            {
+            if (request()->file('foto')) {
                 $user->foto ? Storage::disk('public')->delete($user->foto) : NULL;
                 $foto = request()->file('foto')->store('user', 'public');
-            }else{
+            } else {
                 $foto = $user->foto;
             }
 

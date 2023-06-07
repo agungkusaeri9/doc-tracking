@@ -58,8 +58,8 @@
             <div class="col-md-3 mb-4 stretch-card transparent">
                 <div class="card card-light-danger">
                     <div class="card-body">
-                        <p class="mb-4">Unit Kerja</p>
-                        <p class="fs-30 mb-2">{{ $count['unit_kerja'] }}</p>
+                        <p class="mb-4">User</p>
+                        <p class="fs-30 mb-2">{{ $count['user'] }}</p>
                     </div>
                 </div>
             </div>

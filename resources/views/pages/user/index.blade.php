@@ -195,9 +195,9 @@
                 $('#role_select').append(
                     `<option value="">Semua</option>`
                 );
-                data_roles.forEach(unit_kerja => {
+                data_roles.forEach(role => {
                     $('#role_select').append(
-                        `<option value="${unit_kerja.id}">${unit_kerja.name}</option>`);
+                        `<option value="${role.name}">${role.name}</option>`);
                 });
 
                 // looping unit_kerja di filter

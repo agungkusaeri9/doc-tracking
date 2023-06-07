@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
@@ -47,7 +48,19 @@ class ProfileController extends Controller
         DB::beginTransaction();
         try {
 
-            $data = request()->only(['name', 'email','username','tte_pin']);
+
+            $data = request()->only(['name', 'email','username','tte_pin','foto']);
+            if(request()->file('avatar'))
+            {
+                // cek apakah punya gambar
+                if(auth()->user()->foto)
+                {
+                    Storage::disk('public')->delete(auth()->user()->foto);
+                }
+                $data['foto'] = request()->file('avatar')->store('user','public');
+            }else{
+                $data['foto'] = auth()->user()->fotor;
+            }
             request('password') ? $data['password'] = bcrypt(request('password')) : NULL;
             request()->file('avatar') ? $data['avatar'] = request()->file('avatar')->store('users', 'public') : NULL;
             $data['tte_pin'] = $tte_pin;

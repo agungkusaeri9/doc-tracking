@@ -3,7 +3,8 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <form action="{{ route('users.update', $user->id) }}" method="post" class="d-inline" enctype="multipart/form-data">
+                <form action="{{ route('users.update', $user->id) }}" method="post" class="d-inline"
+                    enctype="multipart/form-data">
                     <div class="card-body row">
                         <div class="col-12">
                             <h4 class="card-title mb-5">Edit User</h4>
@@ -172,9 +173,9 @@
                             </div>
                             <div class='form-group mb-3'>
                                 <label for='role' class='mb-2'>Role</label>
-                                <input type='text' name='role' id="role"
-                                    class='form-control @error('role') is-invalid @enderror' value='{{ old('role') }}'
-                                    readonly>
+                                <select name="role" id="role" class="form-control">
+
+                                </select>
                                 @error('role')
                                     <div class='invalid-feedback'>
                                         {{ $message }}
@@ -209,6 +210,68 @@
 @push('scripts')
     <script>
         $(function() {
+
+            let getRolesNotUnitKerja = function() {
+                let data;
+                $.ajax({
+                    url: '{{ route('roles.get-byunitkerja') }}',
+                    type: 'JSON',
+                    method: 'GET',
+                    async: false,
+                    success: function(response) {
+                        data = response;
+                    }
+                })
+
+                return data;
+            }
+
+            // get jabatans by unit_kerja id
+            let getJabatanNotUnitkerja = function() {
+                let data;
+                $.ajax({
+                    url: '{{ route('jabatans.get-byunitkerja') }}',
+                    type: 'JSON',
+                    method: 'GET',
+                    async: false,
+                    success: function(response) {
+                        data = response;
+                    }
+                })
+
+                return data;
+            }
+
+            let data_jabatans = getJabatanNotUnitkerja();
+
+            // looping jabatan
+            $('#jabatan_id').empty();
+            $('#jabatan_id').append(
+                `<option value="">Pilih Jabatan</option>`
+            );
+            if (data_jabatans) {
+                data_jabatans.forEach(jabatan => {
+                    $('#jabatan_id').append(
+                        `<option value="${jabatan.id}">${jabatan.nama}</option>`);
+                });
+            }
+
+            // looping roles
+            let data_roles = getRolesNotUnitKerja();
+
+            $('#role').empty();
+            $('#role').append(
+                `<option value="">Pilih Role</option>`
+            );
+            let r_name = '{{ $user->getRoleNames()->first() }}';
+
+            if (data_roles) {
+                data_roles.forEach(role => {
+                    let isSelected = role.name == r_name ? 'selected' : '';
+                    $('#role').append(
+                        `<option ${isSelected} value="${role.id}">${role.name}</option>`);
+                });
+            }
 
             $('#unit_kerja_id').on('change', function() {
                 let unit_kerja_id = $(this).val();
@@ -276,9 +339,9 @@
             let jabatan_id = '{{ $user->jabatan_id }}';
             // get role by unit kerja
             let role = getRole(unit_kerja_id);
-            let role_name = role.role ? role.role.name : 'Tidak Mempunyai Role';
+            // let role_name = role.role ? role.role.name : 'Tidak Mempunyai Role';
             let data_jabatan = getJabatan(unit_kerja_id);
-            console.log(data_jabatan);
+
             // looping jabatan
             $('#jabatan_id').empty();
             $('#jabatan_id').append(

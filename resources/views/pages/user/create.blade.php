@@ -235,7 +235,7 @@
 
             // looping roles
             let data_roles = getRolesNotUnitKerja();
-
+            console.log(data_roles);
             $('#role').empty();
             $('#role').append(
                 `<option value="">Pilih Role</option>`
@@ -243,7 +243,7 @@
             if (data_roles) {
                 data_roles.forEach(role => {
                     $('#role').append(
-                        `<option value="${role.id}">${role.name}</option>`);
+                        `<option value="${role.name}">${role.name}</option>`);
                 });
             }
 
@@ -272,7 +272,7 @@
                 if (unit_kerja_id) {
                     $('#role').empty();
                     $('#role').append(
-                        `<option value="${role.name}">${role.role.name}</option>`);
+                        `<option value="${role.role.name}">${role.role.name}</option>`);
                 } else {
                     let data_roles = getRolesNotUnitKerja();
                     $('#role').empty();
@@ -282,7 +282,7 @@
                     if (data_roles) {
                         data_roles.forEach(role => {
                             $('#role').append(
-                                `<option value="${role.name}">${role.name}</option>`);
+                                `<option value="${role.role.name}">${role.name}</option>`);
                         });
                     }
                 }
