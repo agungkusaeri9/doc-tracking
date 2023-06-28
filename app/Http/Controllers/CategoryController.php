@@ -14,7 +14,6 @@ class CategoryController extends Controller
     {
         $this->middleware('can:Category Index')->only(['index']);
         $this->middleware('can:Category Create')->only(['store']);
-        $this->middleware('can:Category Update')->only(['store']);
         $this->middleware('can:Category Delete')->only(['destroy']);
     }
 
@@ -48,7 +47,6 @@ class CategoryController extends Controller
                     } else {
                         $hapus = '';
                     }
-
 
                     return $detail . $edit . $hapus;
                 })

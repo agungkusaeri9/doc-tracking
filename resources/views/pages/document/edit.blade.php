@@ -141,68 +141,6 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            @foreach ($item->details as $detail)
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class='form-group mb-3'>
-                                            <label for='detail_item' class='mb-2'>Item</label>
-                                            <input type='text' name='detail_item[]' required
-                                                class='form-control @error('detail_item') is-invalid @enderror'
-                                                value='{{ $detail->item }}'>
-                                            @error('detail_item')
-                                                <div class='invalid-feedback'>
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class='form-group mb-3'>
-                                            <label for='detail_qty' class='mb-2'>Qty</label>
-                                            <input type='number' required name='detail_qty[]'
-                                                class='form-control @error('detail_qty') is-invalid @enderror'
-                                                value='{{ $detail->qty }}'>
-                                            @error('detail_qty')
-                                                <div class='invalid-feedback'>
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class='form-group mb-3'>
-                                            <label for='detail_harga' class='mb-2'>Harga</label>
-                                            <input type='number' name='detail_harga[]' required
-                                                class='form-control @error('detail_harga') is-invalid @enderror'
-                                                value='{{ $detail->harga }}'>
-                                            @error('detail_harga')
-                                                <div class='invalid-feedback'>
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class='form-group mb-3'>
-                                            <label for="detail_keterangan" class="mb-2">Keterangan</label>
-                                            <input type='text' name='detail_keterangan[]' required
-                                                class='form-control @error('detail_keterangan') is-invalid @enderror'
-                                                value='{{ $detail->keterangan }}'>
-                                            @error('detail_keterangan')
-                                                <div class='invalid-feedback'>
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md align-self-center mt-2">
-                                        <button type="button" class="btn py-2 rowAdd btn-success">Tambah Baris</button>
-                                    </div>
-                                </div>
-                            @endforeach
-                            <div class="newInput"></div>
-                        </div>
-                        <div class="col-md-12">
                             <div class='form-group mb-3'>
                                 <label for='body' class='mb-2'>Isi Surat</label>
                                 <textarea name='body' id='body' cols='30' rows='3'

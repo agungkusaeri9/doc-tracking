@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RoleUnitKerja;
 use App\Models\UnitKerja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -117,7 +118,9 @@ class UnitKerjaController extends Controller
     {
         DB::beginTransaction();
         try {
+            RoleUnitKerja::where('unit_kerja_id',$id)->delete();
             UnitKerja::find($id)->delete();
+
             DB::commit();
             return response()->json(['status' => 'success', 'message' => 'Unit Kerja deleted successfully.']);
         } catch (\Throwable $th) {

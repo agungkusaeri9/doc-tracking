@@ -200,7 +200,7 @@ class DocumentController extends Controller
             }
         }
 
-        $item = Document::with('details')->where('uuid', $uuid)->first();
+        $item = Document::where('uuid', $uuid)->first();
         DB::beginTransaction();
         try {
             $data = request()->only(['kode_hal', 'to_unit_kerja_id', 'to_tembusan_unit_kerja_id', 'hal', 'deskripsi', 'keterangan', 'body', 'category_id']);
@@ -229,30 +229,6 @@ class DocumentController extends Controller
             $detail_qty = request('detail_qty');
             $detail_harga = request('detail_harga');
             $detail_keterangan = request('detail_keterangan');
-
-
-
-            // insert document detail
-            if (count($detail_item) > 0) {
-
-                // dd($item);
-                // hapus detail semua
-                DocumentDetails::where('document_id', $item->id)->delete();
-
-                // create baru
-                foreach ($detail_item as $key => $detail) {
-                    $qty = $detail_qty[$key];
-                    $harga = $detail_harga[$key];
-                    $total = $qty * $harga;
-                    $item->details()->create([
-                        'item' => $detail,
-                        'qty' => $detail_qty[$key],
-                        'harga' => $detail_harga[$key],
-                        'keterangan' => $detail_keterangan[$key],
-                        'total' => $total
-                    ]);
-                }
-            }
 
             // send notifikasi
             Notification::create([
