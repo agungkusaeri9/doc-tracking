@@ -37,6 +37,20 @@
                             <span>{{ $item->created_at->translatedFormat('H:i:s d-m-Y') }}</span>
                         </li>
 
+                        @if ($item->category->name === 'surat tugas' || $item->category->name === 'Surat Tugas')
+                            <li class="list-item mb-2">
+                                <b>Visum Umum</b>
+                                <br>
+                                <a href="{{ route('documents.tte.visum-umum.index', $item->uuid) }}"
+                                    class="btn text-white btn-sm @if ($item->tte_visum_umum_created) btn-success @else btn-secondary @endif">TTE</a>
+                            </li>
+                            <li class="list-item mb-2">
+                                <b>SPD</b>
+                                <br>
+                                <a href="{{ route('documents.tte.spd.index', $item->uuid) }}"
+                                    class="btn text-white btn-sm @if ($item->tte_spd_created) btn-success @else btn-secondary @endif">TTE</a>
+                            </li>
+                        @endif
                         @foreach ($item->attachments as $key => $lampiran)
                             <li class="list-item mb-2">
                                 <b>Lampiran {{ $key + 1 }}</b>
@@ -47,32 +61,6 @@
                                     class="btn btn-success btn-sm">Download</a>
                             </li>
                         @endforeach
-
-                        {{-- <h6 class="mt-5">Detail</h6>
-                        <table class="table table-hover table-striped mt-4">
-                            <tr>
-                                <th>No.</th>
-                                <th>Item</th>
-                                <th>Qty</th>
-                                <th>Keterangan</th>
-                                <th>Harga</th>
-                                <th>Total</th>
-                            </tr>
-                            @forelse ($item->details as $detail)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $detail->item }}</td>
-                                <td>{{ $detail->qty }}</td>
-                                <td>{{ $detail->keterangan }}</td>
-                                <td>Rp {{ number_format($detail->harga ,0,'.','.')}}</td>
-                                <td>Rp {{ number_format($detail->total ,0,'.','.')}}</td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="6" class="text-center">Tidak Ada!</td>
-                            </tr>
-                            @endforelse
-                        </table> --}}
                     </ul>
                 </div>
             </div>

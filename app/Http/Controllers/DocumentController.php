@@ -65,8 +65,8 @@ class DocumentController extends Controller
         $category = explode('-', request('category_id'));
         if ($category[1] === 'Surat Tugas' || $category[1] === 'surat tugas') {
             request()->validate([
-                'visum_umum' => ['required', 'mimes:pdf,docx'],
-                'spd' => ['required', 'mimes:pdf,docx']
+                'visum_umum' => ['required'],
+                'spd' => ['required']
             ]);
         }
 
@@ -78,9 +78,10 @@ class DocumentController extends Controller
 
             // cek nama kategori
             if ($category[1] === 'Surat Tugas' || $category[1] === 'surat tugas') {
-                $data['visum_umum'] = request()->file('visum_umum')->store('document', 'public');
-                $data['spd'] = request()->file('spd')->store('document', 'public');
+               $data['visum_umum'] = request('visum_umum');
+               $data['spd'] = request('spd');
             }
+
 
             $data['from_user_id'] = auth()->id();
             $data['uuid'] = Uuid::uuid4();
@@ -88,10 +89,6 @@ class DocumentController extends Controller
             $data['category_id'] = $category[0];
             $document = Document::create($data);
             $lampiran = request()->file('lampiran');
-            $detail_item = request('detail_item');
-            $detail_qty = request('detail_qty');
-            $detail_harga = request('detail_harga');
-            $detail_keterangan = request('detail_keterangan');
 
             if ($lampiran) {
                 // insert lampiran
@@ -102,23 +99,6 @@ class DocumentController extends Controller
                     ]);
                 }
             }
-
-
-            // // insert document detail
-            // if (count($detail_item) > 0) {
-            //     foreach ($detail_item as $key => $item) {
-            //         $qty = $detail_qty[$key];
-            //         $harga = $detail_harga[$key];
-            //         $total = $qty * $harga;
-            //         $document->details()->create([
-            //             'item' => $item,
-            //             'qty' => $detail_qty[$key],
-            //             'harga' => $detail_harga[$key],
-            //             'keterangan' => $detail_keterangan[$key],
-            //             'total' => $total
-            //         ]);
-            //     }
-            // }
 
             // send notifikasi
             Notification::create([
@@ -173,62 +153,22 @@ class DocumentController extends Controller
     {
         request()->validate([
             'kode_hal' => ['required'],
-            'category_id' => ['required'],
             'to_unit_kerja_id' => ['required'],
             'to_tembusan_unit_kerja_id' => ['required'],
             'hal' => ['required'],
             'deskripsi' => ['required'],
             'keterangan' => ['required'],
             'body' => ['required'],
-            // 'lampiran.*' => 'required|mimes:jpg,jpeg,png,pdf,docx|max:20000',
-            // [
-            //     'lampiran.*.required' => 'Please upload an image',
-            //     'lampiran.*.mimes' => 'Only jpeg,png and pdf, docx images are allowed',
-            //     'lampiran.*.max' => 'Sorry! Maximum allowed size for an image is 20MB',
-            // ],
-
+            'visum_umum' => ['required'],
+            'spd' => ['required']
         ]);
-
-        // cek kategori surat
-        if (request()->file('spd') || request()->file('visum_umum')) {
-            $category = explode('-', request('category_id'));
-            if ($category[1] === 'Surat Tugas' || $category[1] === 'surat tugas') {
-                request()->validate([
-                    'visum_umum' => ['required', 'mimes:pdf,docx'],
-                    'spd' => ['required', 'mimes:pdf,docx']
-                ]);
-            }
-        }
 
         $item = Document::where('uuid', $uuid)->first();
         DB::beginTransaction();
         try {
-            $data = request()->only(['kode_hal', 'to_unit_kerja_id', 'to_tembusan_unit_kerja_id', 'hal', 'deskripsi', 'keterangan', 'body', 'category_id']);
-
-
-            if (request()->file('visum_umum')) {
-                if ($item->visum_umum)
-                    Storage::disk('public')->delete($item->visum_umum);
-
-                $data['visum_umum'] = request()->file('visum_umum')->store('document', 'public');
-            }
-
-            if (request()->file('spd')) {
-                if ($item->spd)
-                    Storage::disk('public')->delete($item->spd);
-
-                $data['spd'] = request()->file('spd')->store('document', 'public');
-            }
-
-            $category = explode('-', request('category_id'));
-            $data['category_id'] = $category[0];
+            $data = request()->only(['kode_hal', 'to_unit_kerja_id', 'to_tembusan_unit_kerja_id', 'hal', 'deskripsi', 'keterangan', 'body','visum_umum','spd']);
             $data['from_user_id'] = auth()->id();
             $item->update($data);
-            $lampiran = request()->file('lampiran');
-            $detail_item = request('detail_item');
-            $detail_qty = request('detail_qty');
-            $detail_harga = request('detail_harga');
-            $detail_keterangan = request('detail_keterangan');
 
             // send notifikasi
             Notification::create([

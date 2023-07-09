@@ -40,21 +40,30 @@ class InboxController extends Controller
                 return DataTables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function ($model) {
+                        $link_disposisi = route('documents.disposisi.index', [
+                            'uuid' => $model->uuid
+                        ]);
                         $link_detail = route('documents.inbox.show', [
                             'uuid' => $model->uuid
                         ]);
                         $link_create_tte = route('documents.tte.index', [
                             'uuid' => $model->uuid ?? 0
                         ]);
+                        if (cek_user_permission('Document Disposisi')) {
+                            $document_disposisi = "<a href='$link_disposisi' class='btn btn-sm py-2 text-white btn-info mx-1' ><i class='fas fa fa-eye'></i> Disposisi</a>";
+                        } else {
+                            $document_disposisi = "";
+                        }
                         if (cek_user_permission('Surat Masuk TTE')) {
-                            $tte = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white btn-secondary mx-1' ><i class='fas fa fa-eye'></i> TTE</a>";
+                            $btn = $model->tte_created_user_id ? 'btn-success' : 'btn-secondary';
+                            $tte = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white $btn mx-1' ><i class='fas fa fa-eye'></i> TTE</a>";
                         } {
                             $tte = "";
                         }
                         if (cek_user_permission('Surat Masuk Show')) {
                             $detail = "<a href='$link_detail' class='btn btn-sm py-2 btn-warning mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> View</a>";
                         }
-                        return $tte  . $detail;
+                        return $document_disposisi . $tte  . $detail;
                     })
                     ->addColumn('unit_kerja', function ($model) {
                         return $model->unit_kerja->name ?? '-';
@@ -72,25 +81,34 @@ class InboxController extends Controller
                 return DataTables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function ($model) {
+                        $link_disposisi = route('letters.disposisi.index', [
+                            'uuid' => $model->uuid
+                        ]);
+
                         $link_detail = route('letters.inbox.show', [
                             'uuid' => $model->uuid
                         ]);
                         $link_create_tte = route('letters.tte.index', [
                             'uuid' => $model->uuid ?? 0
                         ]);
-                       if(cek_user_permission('Surat Masuk TTE'))
-                       {
-                        $tte = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white btn-secondary mx-1' ><i class='fas fa fa-eye'></i> TTE</a>";
-                       }else{
-                        $tte = "";
-                       }
-                       if(cek_user_permission('Surat Masuk Show'))
-                       {
-                        $detail = "<a href='$link_detail' class='btn btn-sm py-2 btn-warning mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> View</a>";
-                       }else{
-                        $detail = "";
-                       }
-                        return $tte . $detail;
+                        if (cek_user_permission('Letter Disposisi')) {
+                            $letter_disposisi = "<a href='$link_disposisi' class='btn btn-sm py-2 text-white btn-info mx-1' ><i class='fas fa fa-eye'></i> Disposisi</a>";
+                        } else {
+                            $letter_disposisi = "";
+                        }
+
+                        if (cek_user_permission('Surat Masuk TTE')) {
+                            $btn = $model->tte_created_user_id ? 'btn-success' : 'btn-secondary';
+                            $tte = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white $btn mx-1' ><i class='fas fa fa-eye'></i> TTE</a>";
+                        } else {
+                            $tte = "";
+                        }
+                        if (cek_user_permission('Surat Masuk Show')) {
+                            $detail = "<a href='$link_detail' class='btn btn-sm py-2 btn-warning mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> View</a>";
+                        } else {
+                            $detail = "";
+                        }
+                        return $letter_disposisi . $tte . $detail;
                     })
                     ->rawColumns(['action'])
                     ->make(true);

@@ -25,7 +25,8 @@
                                 <select name="category_id" id="category_id" class="form-control">
                                     <option value="" selected disabled>Pilih Kategori</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id . '-' . $category->name }}">{{ $category->name }}</option>
+                                        <option value="{{ $category->id . '-' . $category->name }}">{{ $category->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('category_id')
@@ -105,90 +106,31 @@
                                     </div>
                                 @enderror
                             </div>
-                            <div class="d-cat-tugas d-none">
-                                <div class='form-group mb-3'>
-                                    <label for='visum_umum' class='mb-2'>File Visum Umum</label>
-                                    <input type='file' name='visum_umum'
-                                        class='form-control @error('visum_umum') is-invalid @enderror'
-                                        value='{{ old('visum_umum') }}'>
-                                    @error('visum_umum')
-                                        <div class='invalid-feedback'>
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class='form-group mb-3'>
-                                    <label for='spd' class='mb-2'>SPD</label>
-                                    <input type='file' name='spd'
-                                        class='form-control @error('spd') is-invalid @enderror'
-                                        value='{{ old('spd') }}'>
-                                    @error('spd')
-                                        <div class='invalid-feedback'>
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
+                        </div>
+                        <div class="col-12 d-cat-tugas d-none">
+                            <div class='form-group mb-3'>
+                                <label for='visum_umum' class='mb-2'>Visum Umum</label>
+                                <textarea name='visum_umum' id='visum_umum' cols='30' rows='3'
+                                    class='form-control @error('visum_umum') is-invalid @enderror'>{{ old('visum_umum') }}</textarea>
+                                @error('visum_umum')
+                                    <div class='invalid-feedback'>
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
-                        {{-- <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class='form-group mb-3'>
-                                        <label for='detail_item' class='mb-2'>Item</label>
-                                        <input type='text' name='detail_item[]' required
-                                            class='form-control @error('detail_item') is-invalid @enderror'
-                                            value=''>
-                                        @error('detail_item')
-                                            <div class='invalid-feedback'>
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
+                        <div class="col-12 d-cat-tugas d-none">
+                            <div class='form-group mb-3'>
+                                <label for='spd' class='mb-2'>SPD</label>
+                                <textarea name='spd' id='spd' cols='30' rows='3'
+                                    class='form-control @error('spd') is-invalid @enderror'>{{ old('spd') }}</textarea>
+                                @error('spd')
+                                    <div class='invalid-feedback'>
+                                        {{ $message }}
                                     </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class='form-group mb-3'>
-                                        <label for='detail_qty' class='mb-2'>Qty</label>
-                                        <input type='number' required name='detail_qty[]'
-                                            class='form-control @error('detail_qty') is-invalid @enderror' value=''>
-                                        @error('detail_qty')
-                                            <div class='invalid-feedback'>
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class='form-group mb-3'>
-                                        <label for='detail_harga' class='mb-2'>Harga</label>
-                                        <input type='number' name='detail_harga[]' required
-                                            class='form-control @error('detail_harga') is-invalid @enderror'
-                                            value=''>
-                                        @error('detail_harga')
-                                            <div class='invalid-feedback'>
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class='form-group mb-3'>
-                                        <label for="detail_keterangan" class="mb-2">Keterangan</label>
-                                        <input type='text' name='detail_keterangan[]' required
-                                            class='form-control @error('detail_keterangan') is-invalid @enderror'
-                                            value=''>
-                                        @error('detail_keterangan')
-                                            <div class='invalid-feedback'>
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md align-self-center mt-2">
-                                    <button type="button" class="btn py-2 rowAdd btn-success">Tambah Baris</button>
-                                </div>
+                                @enderror
                             </div>
-                            <div class="newInput"></div>
-                        </div> --}}
+                        </div>
                         <div class="col-md-12">
                             <div class='form-group mb-3'>
                                 <label for='body' class='mb-2'>Isi Surat</label>
@@ -222,6 +164,12 @@
     <script src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
     <script>
         $(document).ready(function() {
+            CKEDITOR.replace('visum_umum', {
+                toolbar: 'Full'
+            });
+            CKEDITOR.replace('spd', {
+                toolbar: 'Full'
+            });
             CKEDITOR.replace('body', {
                 toolbar: 'Full'
             });
@@ -288,15 +236,14 @@
                 $(this).parents("#row").remove();
             })
 
-            $('#category_id').on('change', function(){
+            $('#category_id').on('change', function() {
                 let category = $(this).val();
                 let category_split = category.split('-');
                 let category_name = category_split[1];
 
-                if(category_name === 'surat tugas' || category_name === 'Surat Tugas')
-                {
+                if (category_name === 'surat tugas' || category_name === 'Surat Tugas') {
                     $('.d-cat-tugas').removeClass('d-none');
-                }else{
+                } else {
                     $('.d-cat-tugas').addClass('d-none');
                 }
             })

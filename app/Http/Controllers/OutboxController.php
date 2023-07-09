@@ -47,30 +47,27 @@ class OutboxController extends Controller
                             'uuid' => $model->uuid ?? 0
                         ]);
 
-                        if(cek_user_permission('Surat Keluar TTE'))
-                        {
-                            $tte = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white btn-secondary mx-1' ><i class='fas fa fa-eye'></i> TTE</a>";
-                        }else{
+                        if (cek_user_permission('Surat Keluar TTE')) {
+                            $btn = $model->tte_created_user_id ? 'btn-success' : 'btn-secondary';
+                            $tte = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white $btn mx-1' ><i class='fas fa fa-eye'></i> TTE</a>";
+                        } else {
                             $tte = "";
                         }
-                        if(cek_user_permission('Surat Keluar Show'))
-                        {
+                        if (cek_user_permission('Surat Keluar Show')) {
                             $detail = "<a href='$link_show' class='btn btn-sm py-2 text-white btn-warning btnShow mx-1' ><i class='fas fa fa-eye'></i> Show</a>";
-                        }else{
+                        } else {
                             $detail = "";
                         }
 
-                        if(cek_user_permission('Surat Keluar Update'))
-                        {
+                        if (cek_user_permission('Surat Keluar Update')) {
                             $edit = "<a href='$link_edit' class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</a>";
-                        }else{
+                        } else {
                             $edit = "";
                         }
 
-                        if(cek_user_permission('Surat Keluar Delete'))
-                        {
+                        if (cek_user_permission('Surat Keluar Delete')) {
                             $hapus = "<button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name' data-jenis='document'><i class='fas fa fa-trash'></i> Hapus</button>";
-                        }else{
+                        } else {
                             $hapus = "";
                         }
 
@@ -100,34 +97,31 @@ class OutboxController extends Controller
                         $link_create_tte = route('letters.tte.index', [
                             'uuid' => $model->uuid
                         ]);
-                        if(cek_user_permission('Surat Keluar TTE'))
-                        {
-                            $tte = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white btn-secondary mx-1' ><i class='fas fa fa-eye'></i> TTE</a>";
-                        }else{
+                        if (cek_user_permission('Surat Keluar TTE')) {
+                            $btn = $model->tte_created_user_id ? 'btn-success' : 'btn-secondary';
+                            $tte = "<a href='$link_create_tte' class='btn btn-sm py-2 text-white $btn mx-1' ><i class='fas fa fa-eye'></i> TTE</a>";
+                        } else {
                             $tte = "";
                         }
-                        if(cek_user_permission('Surat Keluar Show'))
-                        {
+                        if (cek_user_permission('Surat Keluar Show')) {
                             $detail = "<a href='$link_show' class='btn btn-sm py-2 text-white btn-warning btnShow mx-1' ><i class='fas fa fa-eye'></i> Show</a>";
-                        }else{
+                        } else {
                             $detail = "";
                         }
 
-                        if(cek_user_permission('Surat Keluar Update'))
-                        {
+                        if (cek_user_permission('Surat Keluar Update')) {
                             $edit = "<a href='$link_edit' class='btn btn-sm py-2 btn-info btnEdit mx-1' data-id='$model->id' data-name='$model->name'><i class='fas fa fa-edit'></i> Edit</a>";
-                        }else{
+                        } else {
                             $edit = "";
                         }
 
-                        if(cek_user_permission('Surat Keluar Delete'))
-                        {
+                        if (cek_user_permission('Surat Keluar Delete')) {
                             $hapus = "<button class='btn btn-sm py-2 btn-danger btnDelete mx-1' data-id='$model->id' data-name='$model->name' data-jenis='document'><i class='fas fa fa-trash'></i> Hapus</button>";
-                        }else{
+                        } else {
                             $hapus = "";
                         }
 
-                        return $tte . $detail . $edit . $hapus ;
+                        return $tte . $detail . $edit . $hapus;
                     })
                     ->rawColumns(['action'])
                     ->make(true);
@@ -135,41 +129,41 @@ class OutboxController extends Controller
         }
     }
 
-    public function show($id)
-    {
-        $id = Crypt::decryptString($id);
-        if ($jenis === 'document') {
-            $item = Document::findOrFail($id);
-            return view('pages.outbox.show', [
-                'title' => 'Detail Surat keluar',
-                'item' => $item
-            ]);
-        } else {
-            $item = Letter::findOrFail($id);
-            return view('pages.outbox.show-letter', [
-                'title' => 'Detail Surat keluar',
-                'item' => $item
-            ]);
-        }
-    }
+    // public function show($id)
+    // {
+    //     $id = Crypt::decryptString($id);
+    //     if ($jenis === 'document') {
+    //         $item = Document::findOrFail($id);
+    //         return view('pages.outbox.show', [
+    //             'title' => 'Detail Surat keluar',
+    //             'item' => $item
+    //         ]);
+    //     } else {
+    //         $item = Letter::findOrFail($id);
+    //         return view('pages.outbox.show-letter', [
+    //             'title' => 'Detail Surat keluar',
+    //             'item' => $item
+    //         ]);
+    //     }
+    // }
 
-    public function edit_letter($id)
-    {
-        $id = Crypt::decryptString($id);
-        if ($jenis === 'document') {
-            $item = Document::findOrFail($id);
-            return view('pages.outbox.show', [
-                'title' => 'Detail Surat keluar',
-                'item' => $item
-            ]);
-        } else {
-            $item = Letter::findOrFail($id);
-            $users = User::whereNotIn('id', [auth()->id()])->get();
-            return view('pages.outbox.edit-letter', [
-                'title' => 'Edit Surat keluar',
-                'item' => $item,
-                'users' => $users
-            ]);
-        }
-    }
+    // public function edit_letter($id)
+    // {
+    //     $id = Crypt::decryptString($id);
+    //     if ($jenis === 'document') {
+    //         $item = Document::findOrFail($id);
+    //         return view('pages.outbox.show', [
+    //             'title' => 'Detail Surat keluar',
+    //             'item' => $item
+    //         ]);
+    //     } else {
+    //         $item = Letter::findOrFail($id);
+    //         $users = User::whereNotIn('id', [auth()->id()])->get();
+    //         return view('pages.outbox.edit-letter', [
+    //             'title' => 'Edit Surat keluar',
+    //             'item' => $item,
+    //             'users' => $users
+    //         ]);
+    //     }
+    // }
 }

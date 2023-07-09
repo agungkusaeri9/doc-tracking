@@ -8,16 +8,20 @@ use App\Http\Controllers\CategoryDetailController;
 use App\Http\Controllers\CekSuratController;
 use App\Http\Controllers\DocumentAttachmentController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\DocumentDisposisiController;
+use App\Http\Controllers\DocumentDisposisiUnitController;
 use App\Http\Controllers\InboxController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\LetterAttachmentController;
 use App\Http\Controllers\LetterController;
+use App\Http\Controllers\LetterDisposisiController;
+use App\Http\Controllers\LetterDisposisiUserController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OutboxController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
-use App\Http\Controllers\TteController;
+use App\Http\Controllers\TTEController;
 use App\Http\Controllers\UnitKerjaController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +39,8 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', '/login', 301);
 Route::get('/surat-umum/{uuid}', [CekSuratController::class, 'umum'])->name('cek-letter');
 Route::get('/surat-khusus/{uuid}', [CekSuratController::class, 'khusus'])->name('cek-document');
+Route::get('/visum-umum/{uuid}', [CekSuratController::class, 'visum'])->name('cek-visum-umum');
+Route::get('/spd/{uuid}', [CekSuratController::class, 'visum'])->name('cek-spd');
 
 Auth::routes(['register' => false]);
 
@@ -84,6 +90,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     // users
     Route::get('users/data', [UserController::class, 'data'])->name('users.data');
+    Route::get('users/get', [UserController::class, 'get'])->name('users.get');
     Route::resource('users', UserController::class);
 
     // create letter
@@ -135,4 +142,37 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('tte/documents/{uuid}', [DocumentController::class, 'tte'])->name('documents.tte.index');
     Route::post('tte/documents/{uuid}', [DocumentController::class, 'tte_create'])->name('documents.tte.create');
     Route::get('tte/documents/{uuid}/download', [DocumentController::class, 'tte_download'])->name('documents.tte-download');
+
+
+    // tte visum umum
+    Route::get('tte/documents/visum-umum/{uuid}', [TTEController::class, 'tte_visum_umum'])->name('documents.tte.visum-umum.index');
+    Route::post('tte/documents/visum-umum/{uuid}', [TTEController::class, 'tte_visum_umum_create'])->name('documents.tte.visum-umum.create');
+    Route::get('tte/documents/visum-umum/{uuid}/download', [TTEController::class, 'tte_visum_umum_download'])->name('documents.tte.visum-umum.download');
+
+
+    // tte spd
+    Route::get('tte/documents/spd/{uuid}', [TTEController::class, 'tte_spd'])->name('documents.tte.spd.index');
+    Route::post('tte/documents/spd/{uuid}', [TTEController::class, 'tte_spd_create'])->name('documents.tte.spd.create');
+    Route::get('tte/documents/spd/{uuid}/download', [TTEController::class, 'tte_spd_download'])->name('documents.tte.spd.download');
+
+
+    // letter disposisi
+    Route::get('disposisi/letter/{uuid}', [LetterDisposisiController::class, 'index'])->name('letters.disposisi.index');
+    Route::post('disposisi/letter/{uuid}', [LetterDisposisiController::class, 'update'])->name('letters.disposisi.update');
+
+    // letter disposisi user
+    Route::post('disposisi/letter-penerima', [LetterDisposisiUserController::class, 'store'])->name('letters.disposisi.user.store');
+    // letter disposisi user
+    Route::delete('disposisi/letter-penerima/{id}', [LetterDisposisiUserController::class, 'destroy'])->name('letters.disposisi.user.destroy');
+
+
+
+    // document disposisi
+    Route::get('disposisi/document/{uuid}', [DocumentDisposisiController::class, 'index'])->name('documents.disposisi.index');
+    Route::post('disposisi/document/{uuid}', [DocumentDisposisiController::class, 'update'])->name('documents.disposisi.update');
+
+    // document disposisi unit
+    Route::post('disposisi/document-penerima', [DocumentDisposisiUnitController::class, 'store'])->name('documents.disposisi.unit.store');
+    // document disposisi unit
+    Route::delete('disposisi/document-penerima/{id}', [DocumentDisposisiUnitController::class, 'destroy'])->name('documents.disposisi.unit.destroy');
 });

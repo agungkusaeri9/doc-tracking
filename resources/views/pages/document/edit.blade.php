@@ -27,16 +27,11 @@
                                 @enderror
                             </div>
                             <div class='form-group mb-3'>
-                                <label class='mb-2' for='category_id'>Kategori</label>
-                                <select name="category_id" id="category_id" class="form-control">
-                                    <option value="" selected disabled>Pilih Kategori</option>
-                                    @foreach ($categories as $category)
-                                        <option @selected($category->id == $item->category_id)
-                                            value="{{ $category->id . '-' . $category->name }}">
-                                            {{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('category_id')
+                                <label for='category_name' class='mb-2'>Kategori</label>
+                                <input type='text' name=''
+                                    class='form-control @error('category_name') is-invalid @enderror'
+                                    value="{{ $item->category->name }}" readonly>
+                                @error('category_name')
                                     <div class='invalid-feedback d-inline'>
                                         {{ $message }}
                                     </div>
@@ -105,39 +100,29 @@
                                     </div>
                                 @enderror
                             </div>
-                            {{-- <div class='form-group mb-3'>
-                                <label for='lampiran' class='mb-2'>Lampiran</label>
-                                <input type='file' name='lampiran[]'
-                                    class='form-control @error('lampiran') is-invalid @enderror' multiple>
-                                @error('lampiran.*')
-                                    <div class='invalid-feedback d-inline'>
+                        </div>
+                        <div class="col-12">
+                            <div class='form-group mb-3'>
+                                <label for='visum_umum' class='mb-2'>Visum Umum</label>
+                                <textarea name='visum_umum' id='visum_umum' cols='30' rows='3'
+                                    class='form-control @error('visum_umum') is-invalid @enderror'>{{ $item->visum_umum ?? old('visum_umum') }}</textarea>
+                                @error('visum_umum')
+                                    <div class='invalid-feedback'>
                                         {{ $message }}
                                     </div>
                                 @enderror
-                            </div> --}}
-                            <div class="d-cat-tugas d-none">
-                                <div class='form-group mb-3'>
-                                    <label for='visum_umum' class='mb-2'>File Visum Umum</label>
-                                    <input type='file' name='visum_umum'
-                                        class='form-control @error('visum_umum') is-invalid @enderror'
-                                        value='{{ old('visum_umum') }}'>
-                                    @error('visum_umum')
-                                        <div class='invalid-feedback'>
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class='form-group mb-3'>
-                                    <label for='spd' class='mb-2'>SPD</label>
-                                    <input type='file' name='spd'
-                                        class='form-control @error('spd') is-invalid @enderror'
-                                        value='{{ old('spd') }}'>
-                                    @error('spd')
-                                        <div class='invalid-feedback'>
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class='form-group mb-3'>
+                                <label for='spd' class='mb-2'>SPD</label>
+                                <textarea name='spd' id='spd' cols='30' rows='3'
+                                    class='form-control @error('spd') is-invalid @enderror'>{{ $item->spd ?? old('spd') }}</textarea>
+                                @error('spd')
+                                    <div class='invalid-feedback'>
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -173,6 +158,13 @@
     <script src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
     <script>
         $(document).ready(function() {
+            CKEDITOR.replace('visum_umum', {
+                toolbar: 'Full'
+            });
+
+            CKEDITOR.replace('spd', {
+                toolbar: 'Full'
+            });
             CKEDITOR.replace('body', {
                 toolbar: 'Full'
             });

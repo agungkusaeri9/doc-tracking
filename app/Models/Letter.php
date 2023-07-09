@@ -44,6 +44,12 @@ class Letter extends Model
     {
         return $this->belongsTo(User::class, 'to_user_id', 'id');
     }
+
+    public function from()
+    {
+        return $this->belongsTo(User::class, 'from_user_id', 'id');
+    }
+
     public function tte_created_user()
     {
         return $this->belongsTo(User::class, 'tte_created_user_id', 'id');
@@ -52,5 +58,10 @@ class Letter extends Model
     public function qrcode()
     {
         return asset('storage/' . $this->qrcode);
+    }
+
+    public function disposisi()
+    {
+        return $this->hasOne(LetterDisposisi::class, 'letter_id', 'id');
     }
 }

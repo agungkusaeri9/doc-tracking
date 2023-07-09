@@ -227,4 +227,10 @@ class UserController extends Controller
             return response()->json(['status' => 'error', 'message' => 'System Error!']);
         }
     }
+
+    public function get()
+    {
+        $users = User::orderBy('name', 'ASC')->get();
+        return response()->json($users);
+    }
 }
