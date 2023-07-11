@@ -59,6 +59,33 @@
 
         .body {
             margin-top: 20px;
+            font-size: 12px;
+        }
+
+
+        table.tb-format {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table.tb-format td.td-format {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        table.tb-format ul.abc {
+            list-style-type: lower-alpha;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        table.tb-format .text-right {
+            float: right;
+            margin-right: 100px;
+        }
+
+        table.tb-format td table {
+            border: none;
         }
     </style>
 </head>
@@ -82,6 +109,7 @@
             </tr>
         </table>
         <div class="body mt-4">
+            <h4 style="text-align: center;font-family:Arial, Helvetica, sans-serif">SURAT VISUM UMUM</h4>
             {!! $item->visum_umum !!}
         </div>
     </div>
@@ -96,8 +124,7 @@
                             {{ auth()->user()->jabatan->nama ?? '-' }}</p>
                     </div>
                     <div class="ttd-qrcode">
-                        <img src="{{ $item->qrcodeVisumUmum() }}" alt=""
-                            class="img-fluid gambar-tte">
+                        <img src="{{ $item->qrcodeVisumUmum() }}" alt="" class="img-fluid gambar-tte">
 
                     </div>
                     <div class="tte-nama-gelar">

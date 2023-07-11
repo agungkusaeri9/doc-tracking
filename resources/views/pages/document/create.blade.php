@@ -111,7 +111,379 @@
                             <div class='form-group mb-3'>
                                 <label for='visum_umum' class='mb-2'>Visum Umum</label>
                                 <textarea name='visum_umum' id='visum_umum' cols='30' rows='3'
-                                    class='form-control @error('visum_umum') is-invalid @enderror'>{{ old('visum_umum') }}</textarea>
+                                    class='form-control @error('visum_umum') is-invalid @enderror'>
+                                    <table cellpadding="0" class="tb-format" style="width: 100%">
+                                        <tbody>
+                                          <tr>
+                                            <td style="width: 50%; border: 1px solid black;
+        padding: 8px;">&nbsp;</td>
+                                            <td class="td-format" style=" border: 1px solid black;
+        padding: 8px;">
+                                              <table cellspacing="0" class="border-none" style="width:100%">
+                                                <tbody>
+                                                  <tr>
+                                                    <td>I.</td>
+                                                    <td>Berangkat Dari</td>
+                                                    <td>: Indramayu (tempat kedudukan)</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Pada Tanggal</td>
+                                                    <td>:25 Mei 2023</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Ke</td>
+                                                    <td>: Bogor</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Kepala</td>
+                                                    <td>: <b> Pejabat Pembuat Komitmen</b></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>
+                                                        <b
+                                                          >Bobi Khoerun, M.T.<br />
+                                                          NIP 198806032018031001</b
+                                                        >
+                                                      </p>
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td class="td-format" style=" border: 1px solid black;
+        padding: 8px;">
+                                              <table cellspacing="0" class="border-none" style="width:100%">
+                                                <tbody>
+                                                  <tr>
+                                                    <td>II.</td>
+                                                    <td>Tiba di</td>
+                                                    <td>
+                                                      : Hotel Ibis Styles Bogor Pajajaran - Bogor Jawa Barat
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Pada Tanggal</td>
+                                                    <td>:25 Mei 2023</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Kepala</td>
+                                                    <td>:</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>
+                                                        <br />
+                                                        NIP
+                                                      </p>
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                            </td>
+                                            <td style="width: 50%; border: 1px solid black;
+        padding: 8px;">
+                                              <table cellspacing="0" class="border-none" style="width:100%">
+                                                <tbody>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Berangkat Dari</td>
+                                                    <td>
+                                                      : Hotel Ibis Styles Bogor Pajajaran - Bogor Jawa Barat
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Pada Tanggal</td>
+                                                    <td>:27 Mei 2023</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Ke</td>
+                                                    <td>:</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Kepala</td>
+                                                    <td>:</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>
+                                                        <br />
+                                                        NIP
+                                                      </p>
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td class="td-format" style=" border: 1px solid black;
+        padding: 8px;">
+                                              <table cellspacing="0" class="border-none" style="width:100%">
+                                                <tbody>
+                                                  <tr>
+                                                    <td>III.</td>
+                                                    <td>Tiba di</td>
+                                                    <td>:</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Pada Tanggal</td>
+                                                    <td>:</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Kepala</td>
+                                                    <td>:</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>
+                                                        <br />
+                                                        NIP
+                                                      </p>
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                            </td>
+                                            <td style="width: 50%; border: 1px solid black;
+        padding: 8px;">
+                                              <table cellspacing="0" class="border-none" style="width:100%">
+                                                <tbody>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Ke</td>
+                                                    <td>:</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Kepala</td>
+                                                    <td>:</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>
+                                                        <br />
+                                                        NIP
+                                                      </p>
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td class="td-format" style=" border: 1px solid black;
+        padding: 8px;">
+                                              <table cellspacing="0" class="border-none" style="width:100%">
+                                                <tbody>
+                                                  <tr>
+                                                    <td>IV.</td>
+                                                    <td>Tiba di</td>
+                                                    <td>:</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Pada Tanggal</td>
+                                                    <td>:</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Kepala</td>
+                                                    <td>:</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>
+                                                        <br />
+                                                        NIP
+                                                      </p>
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                            </td>
+                                            <td style="width: 50%; border: 1px solid black;
+        padding: 8px;">
+                                              <table cellspacing="0" class="border-none" style="width:100%">
+                                                <tbody>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Berangkat Dari</td>
+                                                    <td>:</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Pada Tanggal</td>
+                                                    <td>:</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Ke</td>
+                                                    <td>:</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Kepala</td>
+                                                    <td>:</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>
+                                                        <br />
+                                                        NIP
+                                                      </p>
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td class="td-format" style=" border: 1px solid black;
+        padding: 8px;">
+                                              <table cellspacing="0" class="border-none" style="width:100%">
+                                                <tbody>
+                                                  <tr>
+                                                    <td>V.</td>
+                                                    <td>Tiba di</td>
+                                                    <td>: Indramayu</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>Pada Tanggal</td>
+                                                    <td>:27 Mei 2023</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                      <b> Pejabat Pembuat Komitmen</b>
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>
+                                                        <b
+                                                          >Bobi Khoerun, M.T.<br />
+                                                          NIP 198806032018031001</b
+                                                        >
+                                                      </p>
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                            </td>
+                                            <td style="width: 50%; border: 1px solid black;
+        padding: 8px;">
+                                              <table cellspacing="0" class="border-none" style="width:100%">
+                                                <tbody>
+                                                  <tr>
+                                                    <td colspan="3">
+                                                      Telah diperiksa dengan keterangan bahwa perjalanan tersebut
+                                                      perintahnya dan semata-mata untuk kepentingan jabatan dalam
+                                                      waktu yang sesingkat-singkatnya
+                                                    </td>
+                                                  </tr>
+
+                                                  <tr>
+                                                    <td></td>
+                                                    <td>
+                                                      <b> Pejabat Pembuat Komitmen</b>
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>&nbsp;</p>
+
+                                                      <p>
+                                                        <b
+                                                          >Bobi Khoerun, M.T.<br />
+                                                          NIP 198806032018031001</b
+                                                        >
+                                                        <br />
+                                                      </p>
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                </textarea>
                                 @error('visum_umum')
                                     <div class='invalid-feedback'>
                                         {{ $message }}
@@ -123,7 +495,119 @@
                             <div class='form-group mb-3'>
                                 <label for='spd' class='mb-2'>SPD</label>
                                 <textarea name='spd' id='spd' cols='30' rows='3'
-                                    class='form-control @error('spd') is-invalid @enderror'>{{ old('spd') }}</textarea>
+                                    class='form-control @error('spd') is-invalid @enderror'>
+                                    <table border="1" cellpadding="0" class="tb-format" style="width:100%">
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align: center">1</td>
+                                                <td>Pejabat Pembuat Komitmen</td>
+                                                <td colspan="2"><strong>Bobi Khoerun, M.T./198806032018031001</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center">2</td>
+                                                <td>Nama/NIP Pegawai yang melaksanakan perjalanan dinas</td>
+                                                <td colspan="2"><strong>Madirah, S.H./198601102021211001</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center">3</td>
+                                                <td>
+                                                <p>a. Pangkat dan Golongan<br />
+                                                b.&nbsp;Jabatan dan Instansi<br />
+                                                c.&nbsp;Tingkat biaya perjalanan dinas</p>
+                                                </td>
+                                                <td colspan="2">
+                                                <p>a. IX<br />
+                                                b.&nbsp;Analisis SDM Aparatur Ahli Pertama<br />
+                                                c.&nbsp;</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center">4</td>
+                                                <td>Maksud perjalanan dinas</td>
+                                                <td colspan="2">untuk menghadiri undangan Revisi Peta Jabatan PTN</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center">5</td>
+                                                <td>Alat angkutan yang dipergunakan</td>
+                                                <td>Kendaraan Umum</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center">6</td>
+                                                <td>
+                                                <p>a. Tempat Berangkat<br />
+                                                b.&nbsp;Kota Tujuan/Provinsi</p>
+                                                </td>
+                                                <td>
+                                                <p>a. Indramayu, Jawa Barat<br />
+                                                b.&nbsp;Bogor, Jawa Barat</p>
+                                                </td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center">7</td>
+                                                <td>
+                                                <p>a. Lama perjalanan dinas<br />
+                                                b.&nbsp;Tanggal Berangkat<br />
+                                                c.&nbsp;Tanggal harus kembali</p>
+                                                </td>
+                                                <td>
+                                                <p>a. 3 (tiga) hari<br />
+                                                b.&nbsp;Kamis, 25 Mei 2023<br />
+                                                c.&nbsp;Sabtu, 27 Mei 2023</p>
+                                                </td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center">8</td>
+                                                <td>Nama Pengikut/NIP.</td>
+                                                <td style="text-align:center">Golongan/Ruang</td>
+                                                <td style="text-align:center">Keterangan</td>
+                                            </tr>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center">9</td>
+                                                <td>
+                                                <p>a. Instansi<br />
+                                                b.&nbsp;Akun</p>
+                                                </td>
+                                                <td>
+                                                <p>a. Politeknin Negeri Indramayu<br />
+                                                b.&nbsp;524111</p>
+                                                </td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center">10</td>
+                                                <td>Keterampilan lain-lain</td>
+                                                <td>
+                                                <p>No. Surat Tugas<br />
+                                                Tanggal</p>
+                                                </td>
+                                                <td>
+                                                <p>1321/PL42/KP.10.00/2023<br />
+                                                23 Mei 2023</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">&nbsp;</td>
+                                                <td colspan="2">Dikeluarkan di&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Indramayu<br />
+                                                Tanggal&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 23 Mei 2023<br />
+                                                <br />
+                                                <strong>Pejabat Pembuat Komitmen</strong><br />
+                                                <br />
+                                                <br />
+                                                <strong>Bobi Khoerun, M.T.</strong><br />
+                                                NIP 198806032018031001</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </textarea>
                                 @error('spd')
                                     <div class='invalid-feedback'>
                                         {{ $message }}
@@ -173,6 +657,8 @@
             CKEDITOR.replace('body', {
                 toolbar: 'Full'
             });
+            CKEDITOR.allowedContent = true;
+            CKEDITOR.extraAllowedContent = 'td(*)';
             $(".rowAdd").click(function() {
                 let newRow = `
                 <div class="row" id="row">
@@ -250,3 +736,34 @@
         });
     </script>
 @endpush
+
+{{-- @push('styles')
+    <style>
+        table.tb-format {
+            font-size: 12px;
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        table.tb-format {
+            border-collapse: collapse !important;
+            width: 100% !important;
+        }
+
+        table.tb-format td,
+        table.tb-format td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        table.tb-format ul.abc {
+            list-style-type: lower-alpha;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        table.tb-format .text-right {
+            float: right;
+            margin-right: 100px;
+        }
+    </style>
+@endpush --}}

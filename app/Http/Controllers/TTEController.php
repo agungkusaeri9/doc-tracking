@@ -61,7 +61,6 @@ class TTEController extends Controller
         $pdf = Pdf::loadView('pages.tte.document.visum-umum.download', [
             'item' => $item
         ]);
-
         return $pdf->download($item->uuid . '.pdf');
     }
 
@@ -109,11 +108,11 @@ class TTEController extends Controller
     public function tte_spd_download($uuid)
     {
         $item = Document::where('uuid', $uuid)->firstOrFail();
+        // dd($item);
         // $qrcode = QrCode::size(400)->generate($item->uuid);\
         $pdf = Pdf::loadView('pages.tte.document.spd.download', [
             'item' => $item
         ]);
-
         return $pdf->download($item->uuid . '.pdf');
     }
 }

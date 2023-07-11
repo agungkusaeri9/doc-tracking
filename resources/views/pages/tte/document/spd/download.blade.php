@@ -60,6 +60,33 @@
         .body {
             margin-top: 20px;
         }
+
+        table.tb-format {
+            font-size: 12px;
+            font-family: Arial, Helvetica, sans-serif
+        }
+
+        table.tb-format {
+            border-collapse: collapse !important;
+            width: 100% !important;
+        }
+
+        table.tb-format td,
+        table.tb-format td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        table.tb-format ul.abc {
+            list-style-type: lower-alpha;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        table.tb-format .text-right {
+            float: right;
+            margin-right: 100px;
+        }
     </style>
 </head>
 
@@ -82,6 +109,8 @@
             </tr>
         </table>
         <div class="body mt-4">
+            <h4 style="text-align: center;font-family:Arial, Helvetica, sans-serif">SURAT PERJALANAN DINAS <br>
+                (SPD)</h4>
             {!! $item->spd !!}
         </div>
     </div>
@@ -96,8 +125,7 @@
                             {{ auth()->user()->jabatan->nama ?? '-' }}</p>
                     </div>
                     <div class="ttd-qrcode">
-                        <img src="{{ $item->qrcodeSpd() }}" alt=""
-                            class="img-fluid gambar-tte">
+                        <img src="{{ $item->qrcodeSpd() }}" alt="" class="img-fluid gambar-tte">
 
                     </div>
                     <div class="tte-nama-gelar">

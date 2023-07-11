@@ -71,7 +71,7 @@ class Document extends Model
     }
     public function qrcodeSpd()
     {
-        return asset('storage/' . $this->visum_umum_qrcode);
+        return asset('storage/' . $this->spd_qrcode);
     }
 
     public static function getNewCode($category_id)
